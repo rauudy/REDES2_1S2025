@@ -1,0 +1,146 @@
+----------------------------------------Practica 1
+2 ^ 11 - 2 = 2046
+2 ^ 10 - 2 = 1022
+2 ^ 9 - 2 = 510
+2 ^ 8 - 2 = 254
+2 ^ 7 - 2 = 126  
+2 ^ 6 - 2 = 62   
+2 ^ 5 - 2 = 30   
+2 ^ 4 - 2 = 14
+2 ^ 3 - 2 = 6	<---3
+2 ^ 2 - 2 = 2    <---2
+2 ^ 1 - 2 = 0
+2 ^ 0 - 2 = - 1
+
+
+
+OSPF
+10.0.11.0/24
+
+2 host -------------2 ^ 2 - 2 = 2
+
+11111111.11111111.11111111.11111100
+255.255.255.252
+32 - 2 = 30
+
+10.0.11.0 direcciones de red
+10.0.11.1 primera direccion de host
+10.0.11.2 última direccion de host
+10.0.11.3  direccion de broadcast
+
+RIP
+10.0.21.0/24 
+
+2 host -------------2 ^ 2 - 2 = 2
+11111111.11111111.11111111.11111100
+255.255.255.252
+32 - 2 = 30
+
+10.0.21.0 direcciones de red
+10.0.21.1 primera direccion de host
+10.0.21.2 última direccion de host
+10.0.21.3  direccion de broadcast
+
+EIGRP
+10.0.31.0/24 
+2 host -------------2 ^ 2 - 2 = 2
+11111111.11111111.11111111.11111100
+255.255.255.252
+32 - 2 = 30
+
+10.0.31.0 direcciones de red
+10.0.31.1 primera direccion de host
+10.0.31.2 última direccion de host
+10.0.31.3  direccion de broadcast
+
+
+
+
+
+
+Red 192.168.11.0 /24	Primaria
+3 host -------------2 ^ 3 - 2 = 6
+11111111.11111111.11111111.11111000
+255.255.255.248
+32 - 3 = 29
+
+Lado izquierdo
+192.168.11.0 direcciones de red
+192.168.11.1 primera direccion de host, usada para router - gateway
+192.168.11.2 primera direccion de host, pc
+192.168.11.6 última direccion de host, pc
+192.168.11.7  direccion de broadcast
+
+3 host -------------2 ^ 3 - 2 = 6
+11111111.11111111.11111111.11111000
+255.255.255.248
+32 - 3 = 29
+
+Lado Derecho
+192.168.11.8 direcciones de red
+192.168.11.9 primera direccion de host, usada para router - gateway
+192.168.11.10 primera direccion de host, pc
+192.168.11.14 última direccion de host, pc
+192.168.11.15  direccion de broadcast
+
+
+Red 192.168.21.0 /24	Básicos
+2 host -------------2 ^ 2 - 2 = 2
+11111111.11111111.11111111.11111100
+255.255.255.252
+32 - 2 = 30
+
+Lado izquierdo
+192.168.21.0 direcciones de red
+192.168.21.1 primera direccion de host, usada para router - gateway
+192.168.21.2 primera y unica direccion de host, pc
+192.168.21.3  direccion de broadcast
+
+3 host -------------2 ^ 3 - 2 = 6
+11111111.11111111.11111111.11111000
+255.255.255.248
+32 - 3 = 29
+
+Lado Derecho
+192.168.21.4 direcciones de red
+192.168.21.5 primera direccion de host, usada para router - gateway
+192.168.21.6 primera direccion de host, pc
+192.168.21.10 última direccion de host, pc
+192.168.21.11  direccion de broadcast
+
+
+
+Red 192.168.31.0 /24	Diversificado
+3 host -------------2 ^ 3 - 2 = 6
+11111111.11111111.11111111.11111000
+255.255.255.248
+32 - 3 = 29
+
+Lado izquierdo
+192.168.31.0 direcciones de red
+192.168.31.1 primera direccion de host, usada para router - gateway
+192.168.31.2 primera direccion de host, pc
+192.168.31.6 última direccion de host, pc
+192.168.31.7  direccion de broadcast
+
+2 host -------------2 ^ 2 - 2 = 2
+11111111.11111111.11111111.11111100
+255.255.255.252
+32 - 2 = 30
+
+Lado Derecho
+192.168.21.8 direcciones de red
+192.168.21.9 primera direccion de host, usada para router - gateway
+192.168.21.10 primera y unica direccion de host, pc
+192.168.21.11  direccion de broadcast
+
+
+
+2^8 - 2= 254 hosts disponibles
+
+
+
+
+
+
+----------------------------------------Practica 1 fin
