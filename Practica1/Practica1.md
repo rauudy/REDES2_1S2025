@@ -3,6 +3,7 @@
 
 #### Comandos VTP
 
+----------------------------------------------
 
 +En el switch SERVIDOR VTP:
 
@@ -29,6 +30,9 @@ exit
 
 show vlan brief
 
+-----------------------------------------------------
+
+
 +Configurar puertos trunk (ej: interfaces conectadas a otros switches):
 
 interface GigabitEthernet0/1   # Reemplaza con la interfaz correcta  
@@ -41,6 +45,7 @@ switchport mode trunk
 switchport trunk allowed vlan all
 exit
 
+----------------------------------------------------
 
 -En los switches CLIENTES VTP:
 
@@ -77,3 +82,4 @@ switchport mode access
 switchport access vlan 61
 exit
 
+--------------------------------------------------
