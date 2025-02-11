@@ -3,7 +3,7 @@
 
 #### Comandos VTP
 
-----------------------------------------------
+----------------------------------------------Lado derecho
 
 +En el switch SERVIDOR VTP:
 
@@ -82,7 +82,7 @@ switchport mode access
 switchport access vlan 61
 exit
 
---------------------------------------------------
+--------------------------------------------------Lado izquierdo
 
 +En el switch SERVIDOR SW5_G37 VTP:
 
@@ -160,9 +160,6 @@ configure terminal
 interface fa0/3
 switchport mode access
 switchport access vlan 11
-switchport access vlan 41
-switchport access vlan 51
-switchport access vlan 61
 exit
 
 enable 
@@ -170,9 +167,6 @@ configure terminal
 interface fa0/3
 switchport mode access
 switchport access vlan 21
-switchport access vlan 41
-switchport access vlan 51
-switchport access vlan 61
 exit
 
 enable 
@@ -180,7 +174,21 @@ configure terminal
 interface fa0/3
 switchport mode access
 switchport access vlan 31
-switchport access vlan 41
-switchport access vlan 51
-switchport access vlan 61
 exit
+
+
+#### Comandos STP
+---------------------Lado derecho
+enable
+configure terminal
+spanning-tree mode pvst
+exit
+show spanning-tree
+
+---------------------Lado izquierdo
+
+enable
+configure terminal
+spanning-tree mode rapid-pvst
+exit
+show spanning-tree
