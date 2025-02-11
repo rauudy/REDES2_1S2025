@@ -254,3 +254,117 @@ exit
 show ip interface brief
 
 --------------------------------------
+
+
+### Configuracion Router Protocolos OSPF, RIP, EIGRP
+
+-----------------------------------------Router0
+enable
+configure terminal
+
+interface gigabitEthernet 0/1
+ip address 10.0.11.1 255.255.255.0
+no shutdown
+exit
+
+router ospf 1
+network 192.168.11.0 0.0.0.255 area 0
+network 192.168.21.0 0.0.0.255 area 0
+network 192.168.31.0 0.0.0.255 area 0
+network 10.0.11.0 0.0.0.255 area 0
+exit
+
+
+
+show ip route
+
+-----------------------------------------Router1
+enable
+configure terminal
+
+interface GigabitEthernet0/0
+ip address 10.0.11.2 255.255.255.0
+no shutdown
+exit
+
+interface GigabitEthernet0/1
+ip address 10.0.21.1 255.255.255.0
+no shutdown
+exit
+
+router ospf 1
+network 10.0.11.0 0.0.0.255 area 0
+exit
+
+router rip
+version 2
+network 10.0.21.0
+no auto-summary
+do write
+exit
+
+router ospf 1
+redistribute rip subnets
+exit
+
+router rip
+redistribute ospf 1 metric 5
+exit
+
+
+show ip route
+-----------------------------------------Router2
+enable
+configure terminal
+
+interface GigabitEthernet0/0
+ip address 10.0.21.2 255.255.255.0
+no shutdown
+exit
+
+interface GigabitEthernet0/1
+ip address 10.0.31.1 255.255.255.0
+no shutdown
+exit
+
+router rip
+version 2
+network 10.0.21.0
+no auto-summary
+exit
+
+router eigrp 100
+network 10.0.31.0
+no auto-summary
+exit
+
+router rip
+redistribute eigrp 100 metric 5
+exit
+
+router eigrp 100
+redistribute rip metric 10000 100 255 1 1500
+exit
+-----------------------------------------Router3
+
+enable
+configure terminal
+
+interface GigabitEthernet0/1
+ip address 10.0.31.2 255.255.255.0
+no shutdown
+exit
+
+router eigrp 100
+network 192.168.41.0
+network 192.168.51.0
+network 192.168.61.0
+network 10.0.31.0
+no auto-summary
+exit
+
+show ip interface brief
+
+--------------------------------------
+
+
