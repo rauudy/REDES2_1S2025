@@ -196,5 +196,61 @@ show spanning-tree
 
 #### Configuracion PC's
 
+Mediante a la tabla excel se configuraron las ips de las pc
 
 
+### Configuracion Router
+
+-----------------------------------------Lado izquierdo Router0
+enable
+configure terminal
+
+interface gigabitEthernet 0/0
+no shutdown
+exit
+
+interface gigabitEthernet 0/0.11
+encapsulation dot1Q 11
+ip address 192.168.11.1 255.255.255.0
+exit
+
+interface gigabitEthernet 0/0.21
+encapsulation dot1Q 21
+ip address 192.168.21.1 255.255.255.0
+exit
+
+interface gigabitEthernet 0/0.31
+encapsulation dot1Q 31
+ip address 192.168.31.1 255.255.255.0
+exit
+
+show ip interface brief
+
+
+-----------------------------------------Lado derecho Router3
+
+enable
+configure terminal
+
+interface gigabitEthernet 0/0
+no shutdown
+exit
+
+interface gigabitEthernet 0/0.41
+encapsulation dot1Q 41
+ip address 192.168.41.1 255.255.255.0
+exit
+
+interface gigabitEthernet 0/0.51
+encapsulation dot1Q 51
+ip address 192.168.51.1 255.255.255.0
+exit
+
+interface gigabitEthernet 0/0.61
+encapsulation dot1Q 61
+ip address 192.168.61.1 255.255.255.0
+exit
+
+show ip interface brief
+
+--------------------------------------
