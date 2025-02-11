@@ -192,3 +192,9 @@ configure terminal
 spanning-tree mode rapid-pvst
 exit
 show spanning-tree
+
+
+#### Configuracion PC's
+
+
+
