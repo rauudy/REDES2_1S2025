@@ -1,5 +1,26 @@
 # MANUAL TECICO
 
+#### Comandos de Seguridad
+
+---------------------------------------------Password a switch server
+enable
+configure terminal
+enable secret redes2grupo37
+exit
+wr
+
+
+---------------------------------------------Interfaces con host de basicos
+enable
+configure terminal
+interface fa0/3 
+switchport port-security
+switchport port-security maximum 1
+switchport port-security violation shutdown
+switchport port-security mac-address sticky
+exit
+write memory
+
 
 #### Comandos VTP
 
