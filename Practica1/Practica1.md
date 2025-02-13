@@ -22,6 +22,20 @@ exit
 write memory
 
 
+
+
+#### Comandos de Seguridad DTP
+
+enable
+configure terminal
+interface range Fa0/1 - 9
+switchport mode trunk
+switchport nonegotiate
+exit
+exit
+write memory
+
+
 #### Comandos VTP
 
 ----------------------------------------------Lado derecho
@@ -389,3 +403,66 @@ show ip interface brief
 --------------------------------------
 
 
+# Escenario de Prueba
+
+Cuando se desconecta el cable o se pierde la conexion en el enlace activo/forwarding en el caso de Rapid PVST los paquetes siguieron transmitiendose sin perdida y sin interrupcion
+por lo que no hubo "Request Timed Out" al desconectar el cable, lo que indica una convergencia inmediata como se presenta a continuacion:
+
+### Comparación de Escenarios de Spanning-Tree
+
+| Escenario | Protocolo Spanning-Tree | Red Primaria (Convergencia) | Red Básicos (Convergencia) | Red Diversificado (Convergencia) |
+|-----------|-------------------------|-----------------------------|-----------------------------|-------------------------------|
+| **1**     | PVST                    | Lento (~10-20 seg)         | Lento (~55-60 seg)         | Lento (~30-40 seg)          |
+| **2**     | Rapid PVST               | Muy rápida (~0-1 seg)      | Muy rápida (~0-1 seg)      | 0seg       |
+
+Con Rapid PVST cuando el enlace original se recuperó, solo se registró un "Request Timed Out", lo que indica que la red necesitó un breve momento para redirigir el tráfico de regreso a su ruta principal. Este tiempo de interrupción es mínimo y no representa una pérdida prolongada de paquetes, lo que confirma que la red se adaptó rápidamente a los cambios sin afectar significativamente la conectividad.
+
+En comparación, PVST es notablemente más lento debido a que utiliza el protocolo STP tradicional, el cual opera con temporizadores fijos y puede tardar hasta 50 segundos en converger. Esto se debe a que PVST sigue una transición secuencial de estados:
+
+1. Blocking (20 seg)
+2. Listening (15 seg)
+3. Learning (15 seg)
+4. Forwarding
+
+Los múltiples "Request Timed Out" observados durante la prueba con PVST indican que la red no cambia de ruta de forma inmediata, lo que puede afectar la disponibilidad en entornos críticos.
+
+Por otro lado, Rapid PVST es más eficiente porque emplea BPDUs instantáneos y reemplaza el estado Blocking por Discarding, lo que optimiza la convergencia y permite una recuperación mucho más rápida. 
+
+
+### Primaria
+
+| Protocolo    | Comportamiento al Desconectar | Comportamiento al Reconectar | Convergencia |
+|-------------|-----------------------------|-----------------------------|-------------|
+| **PVST**    | 5 paquetes perdidos (~10-20 seg) | 5 paquetes perdidos (~10-20 seg) | Lento (~10-20 seg) |
+| **Rapid PVST** | Comunicación inmediata | Pequeña interrupción (1 request timed out) | 0seg |
+
+---
+
+### Diversificado
+
+| Protocolo    | Comportamiento al Desconectar | Comportamiento al Reconectar | Convergencia |
+|-------------|-----------------------------|-----------------------------|-------------|
+| **PVST**    | 5 paquetes perdidos (~30-40 seg) | 5 paquetes perdidos (~30-40 seg) | Lento (~30-40 seg) |
+| **Rapid PVST** | Comunicación inmediata | Pequeña interrupción (1 request timed out) | 0seg |
+
+---
+
+### Básicos
+
+| Protocolo    | Comportamiento al Desconectar | Comportamiento al Reconectar | Convergencia |
+|-------------|-----------------------------|-----------------------------|-------------|
+| **PVST**    | 5 paquetes perdidos (~55-60 seg) | 5 paquetes perdidos (~30-40 seg) | Lento (~55-60 seg) |
+| **Rapid PVST** | Comunicación inmediata | Pequeña interrupción (1 request timed out ~5-10 seg) | 0seg |
+
+
+
+### Propuesta Final
+
+Después de realizar las pruebas de convergencia con PVST y Rapid PVST en las redes Primaria, Básicos y Diversificado, los resultados demuestran que Rapid PVST ofrece el menor tiempo de convergencia en todos los casos.
+
+- Rapid PVST tiene una convergencia casi instantánea (~0-1 seg), mientras que PVST presenta tiempos de convergencia de hasta 60 segundos en algunos casos.
+- Al recuperar un enlace, Rapid PVST solo genera un Request Timed Out, mientras que PVST presenta múltiples pérdidas de paquetes.
+- PVST utiliza un método más lento basado en transiciones secuenciales de estado (Blocking → Listening → Learning → Forwarding), lo que aumenta el tiempo de respuesta ante fallos.
+- Rapid PVST optimiza la convergencia con BPDUs instantáneos y el estado Discarding, evitando largas esperas.
+
+Se elige Rapid PVST como el protocolo definitivo, ya que ofrece una recuperación de enlaces mucho más rápida, minimizando el impacto en la conectividad. Esto lo hace ideal para entornos donde la disponibilidad de la red es crítica.
