@@ -1,399 +1,163 @@
-# MANUAL TECICO
+# Práctica 1
 
-#### Comandos de Seguridad
+## GRUPO 37
 
----------------------------------------------Password a switch server
+| Nombre                                 | Carnet      |
+|----------------------------------------|-------------|
+| Alejandro René Caballeros González     | 201903549   |
+| Raudy David Cabrera Contreras	         | 201901973   |
+| Christtopher Jose Chitay Coutino       | 201113851   |
+
+## Objetivos
+
+- Familiarizarse con el simulador Cisco Packet Tracer.
+- Realizar las configuraciones básicas del switch.
+- Configurar y conocer el funcionamiento de las VLAN.
+- Configurar y conocer los tipos de acceso en los puertos.
+- Configurar y conocer el protocolo VTP con sus distintos modos.
+- Configurar y conocer la comunicación entre distintas VLAN.
+- Comprender el funcionamiento de STP, sus distintas versiones y los estados de las interfaces.
+- Aplicar las medidas de seguridad en los puertos de un switch.
+- Configurar y conocer el enrutamiento dinámico.
+
+## Topologia
+![imagen](https://github.com/user-attachments/assets/9b018a39-f75c-4eaf-a36e-bcf2bcadaa8d)
+
+## Configuraciones de los switches
+
+### Configuración de hostname a todos los switches 
+```
+enable
+configure terminal
+hostname SW#_G#
+write memory
+```
+
+### Configuración de password encriptado en el switch server
+```
 enable
 configure terminal
 enable secret redes2grupo37
+```
+
+## VTP
+
+### Switch servidor
+```
+enable 
+configure terminal 
+vtp domain g37 
+vtp mode server 
+vtp password cisco123 
 exit
-wr
+```
 
+### Switches clientes y propagación de VLANs
+```
+enable 
+configure terminal 
+vtp domain g37 
+vtp mode client 
+vtp password cisco123 
+exit
+```
 
----------------------------------------------Interfaces con host de basicos
-enable
-configure terminal
+## VLANS
+
+### CONFIGURACION VLANS IZQUIERDA
+```
+enable 
+configure terminal 
+vlan 11 name Primaria
+vlan 21 name Basicos
+vlan 31 name Diversificado 
+exit
+```
+
+### CONFIGURACION VLANS DERECHA
+```
+enable 
+configure terminal 
+vlan 41 name Primaria
+vlan 51 name Basicos
+vlan 61 name Diversificado 
+exit
+```
+
+### CONFIGURACION DE PUERTOS
+```
+interface gi0/1
+switchport mode trunk
+switchport trunk allowed vlan all
+exit
+
+interface range Fa0/1-9 
+switchport mode trunk 
+switchport trunk allowed vlan all 
+exit
+```
+
+### Asigancion de VLANS a Puertos cons Host
+```
+configure terminal 
 interface fa0/3 
-switchport port-security
-switchport port-security maximum 1
-switchport port-security violation shutdown
-switchport port-security mac-address sticky
-exit
-write memory
-
-
-
-
-#### Comandos de Seguridad DTP
-
-enable
-configure terminal
-interface range Fa0/1 - 9
-switchport mode trunk
-switchport nonegotiate
-exit
-exit
-write memory
-
-
-#### Comandos VTP
-
-----------------------------------------------Lado derecho
-
-+En el switch SERVIDOR VTP:
-
-enable
-configure terminal
-vtp domain g37
-vtp mode server
-vtp password cisco123
+switchport mode access 
+switchport access vlan 41 
 exit
 
-show vtp status
-
-+Crear las VLANs Derecha:
-
-enable
-configure terminal
-vlan 41
-name Primaria  
-vlan 51  
-name Basicos  
-vlan 61  
-name Diversificado 
+interface fa0/3 
+switchport mode access 
+switchport access vlan 51 
 exit
 
-show vlan brief
+interface fa0/3 
+switchport mode access 
+switchport access vlan 61 
+exit
 
------------------------------------------------------
+enable 
+configure terminal 
+interface fa0/3 
+switchport mode access 
+switchport access vlan 11 
+exit
 
+enable 
+configure terminal 
+interface fa0/3 
+switchport mode access 
+switchport access vlan 21 
+exit
 
-+Configurar puertos trunk (ej: interfaces conectadas a otros switches):
+enable 
+configure terminal 
+interface fa0/3 
+switchport mode access 
+switchport access vlan 31 
+exit
+```
 
-interface GigabitEthernet0/1   # Reemplaza con la interfaz correcta  
-switchport mode trunk  
-switchport trunk allowed vlan all  
+## STP y RSTP
+
+### PVST configurado (3) y tabla con tiempos en la documentación (5).
+```
+enable 
+configure terminal 
+spanning-tree mode pvst 
 exit 
-
-interface range Fa0/1-9
-switchport mode trunk
-switchport trunk allowed vlan all
-exit
-
-----------------------------------------------------
-
--En los switches CLIENTES VTP:
-
-enable
-configure terminal
-vtp domain g37
-vtp mode client
-vtp password cisco123
-exit
-
--Configurar puertos trunk (igual que en el servidor):
- 
-
-interface range Fa0/1-2
-switchport mode trunk
-switchport trunk allowed vlan all
-exit
-
--Asignación de VLANs a puertos:
-
-configure terminal
-interface fa0/3
-switchport mode access
-switchport access vlan 41
-exit
-
-interface fa0/3
-switchport mode access
-switchport access vlan 51
-exit
-
-interface fa0/3
-switchport mode access
-switchport access vlan 61
-exit
-
---------------------------------------------------Lado izquierdo
-
-+En el switch SERVIDOR SW5_G37 VTP:
-
-enable
-configure terminal
-vtp domain g37
-vtp mode server
-vtp password cisco123
-exit
-
-show vtp status
-
-- CONFIGURAR VLANS IZQUIERDA
-
-enable
-configure terminal
-vlan 11
-name Primaria  
-vlan 21  
-name Basicos  
-vlan 31  
-name Diversificado 
-exit
-
-show vlan brief
-
---------------------------------------------------
-
-Configurar puertos en modo trunk del server
-
-interface range Fa0/1-9
-switchport mode trunk
-switchport trunk allowed vlan all
-exit
-
-
---------------------------------------------------
-
-Configurar puertos en modo trunk del cliente
-
-enable
-configure terminal
-interface range Fa0/1-2
-switchport mode trunk
-switchport trunk allowed vlan all
-exit
-
-
-enable
-configure terminal
-interface range Fa0/1-3
-switchport mode trunk
-switchport trunk allowed vlan all
-exit
-
-enable
-configure terminal
-interface range Fa0/1-4
-switchport mode trunk
-switchport trunk allowed vlan all
-exit
-
-
-
-enable 
-show vlan brief
-show vtp status
-
-------------------------------------------------
-
-Configurar puerto modo acceso del cliente
-
-enable 
-configure terminal
-interface fa0/3
-switchport mode access
-switchport access vlan 11
-exit
-
-enable 
-configure terminal
-interface fa0/3
-switchport mode access
-switchport access vlan 21
-exit
-
-enable 
-configure terminal
-interface fa0/3
-switchport mode access
-switchport access vlan 31
-exit
-
-
-#### Comandos STP
----------------------Lado derecho
-enable
-configure terminal
-spanning-tree mode pvst
-exit
 show spanning-tree
+```
 
----------------------Lado izquierdo
-
-enable
-configure terminal
-spanning-tree mode rapid-pvst
-exit
+### RPSTP configurado (3) y tabla con tiempos en la documentación (5). 
+```
+enable 
+configure terminal 
+spanning-tree mode rapid-pvst 
+exit 
 show spanning-tree
+```
 
-
-#### Configuracion PC's
-
-Mediante a la tabla excel se configuraron las ips de las pc
-
-
-### Configuracion Router
-
-### Configuracion Router Protocolos OSPF, RIP, EIGRP
-
------------------------------------------Router0
-enable
-configure terminal
-
-interface gigabitEthernet 0/0
-no shutdown
-exit
-
-interface gigabitEthernet 0/0.11
-encapsulation dot1Q 11
-ip address 192.168.11.1 255.255.255.0
-exit
-
-interface gigabitEthernet 0/0.21
-encapsulation dot1Q 21
-ip address 192.168.21.1 255.255.255.0
-exit
-
-interface gigabitEthernet 0/0.31
-encapsulation dot1Q 31
-ip address 192.168.31.1 255.255.255.0
-exit
-
-interface gigabitEthernet 0/1
-ip address 10.0.11.1 255.255.255.0
-no shutdown
-exit
-
-router ospf 1
-network 192.168.11.0 0.0.0.255 area 0
-network 192.168.21.0 0.0.0.255 area 0
-network 192.168.31.0 0.0.0.255 area 0
-network 10.0.11.0 0.0.0.255 area 0
-exit
-
-end
-wr
-
-show ip route
-show running-config
-show ip interface brief
-
------------------------------------------Router1
-enable
-configure terminal
-
-interface GigabitEthernet0/0
-ip address 10.0.11.2 255.255.255.0
-no shutdown
-exit
-
-interface GigabitEthernet0/1
-ip address 10.0.21.1 255.255.255.0
-no shutdown
-exit
-
-router ospf 1
-network 10.0.11.0 0.0.0.255 area 0
-redistribute rip subnets
-exit
-
-router rip
-version 2
-network 10.0.21.0
-redistribute ospf 1 metric 5
-no auto-summary
-exit
-
-end
-wr
-
-show ip route
-show running-config
-show ip interface brief
------------------------------------------Router2
-enable
-configure terminal
-
-interface GigabitEthernet0/0
-ip address 10.0.21.2 255.255.255.0
-no shutdown
-exit
-
-interface GigabitEthernet0/1
-ip address 10.0.31.1 255.255.255.0
-no shutdown
-exit
-
-router rip
-version 2
-network 10.0.21.0
-redistribute eigrp 100 metric 5
-no auto-summary
-exit
-
-router eigrp 100
-network 10.0.31.0 0.0.0.255
-redistribute rip metric 10000 100 255 1 1500
-no auto-summary
-exit
-
-end
-wr
-
-show ip route
-show running-config
-show ip interface brief
-
------------------------------------------Router3
-
-enable
-configure terminal
-
-interface gigabitEthernet 0/0
-no shutdown
-exit
-
-interface gigabitEthernet 0/0.41
-encapsulation dot1Q 41
-ip address 192.168.41.1 255.255.255.0
-exit
-
-interface gigabitEthernet 0/0.51
-encapsulation dot1Q 51
-ip address 192.168.51.1 255.255.255.0
-exit
-
-interface gigabitEthernet 0/0.61
-encapsulation dot1Q 61
-ip address 192.168.61.1 255.255.255.0
-exit
-
-interface GigabitEthernet0/1
-ip address 10.0.31.2 255.255.255.0
-no shutdown
-exit
-
-router eigrp 100
-network 192.168.41.0 0.0.0.255
-network 192.168.51.0 0.0.0.255
-network 192.168.61.0 0.0.0.255
-network 10.0.31.0 0.0.0.255
-no auto-summary
-exit
-
-end
-wr
-
-show ip route
-show running-config
-show ip interface brief
-
---------------------------------------
-
-
-# Escenario de Prueba
+## Escenario de Prueba
 
 Cuando se desconecta el cable o se pierde la conexion en el enlace activo/forwarding en el caso de Rapid PVST los paquetes siguieron transmitiendose sin perdida y sin interrupcion
 por lo que no hubo "Request Timed Out" al desconectar el cable, lo que indica una convergencia inmediata como se presenta a continuacion:
@@ -456,3 +220,196 @@ Después de realizar las pruebas de convergencia con PVST y Rapid PVST en las re
 - Rapid PVST optimiza la convergencia con BPDUs instantáneos y el estado Discarding, evitando largas esperas.
 
 Se elige Rapid PVST como el protocolo definitivo, ya que ofrece una recuperación de enlaces mucho más rápida, minimizando el impacto en la conectividad. Esto lo hace ideal para entornos donde la disponibilidad de la red es crítica.
+
+
+## Port-Security
+
+### Port-security en todos los dispositivos de la vlan “Básicos”
+```
+enable 
+configure terminal 
+interface fa0/3 
+switchport port-security 
+switchport port-security maximum 1 
+switchport port-security violation shutdown 
+switchport port-security mac-address 
+exit 
+write memory
+```
+
+### Comandos de Seguridad DTP
+```
+enable
+configure terminal
+interface range Fa0/1 - 9
+switchport mode trunk
+switchport nonegotiate
+exit
+exit
+write memory
+```
+
+## Enrutamiento
+
+### Configuracion Router Protocolos OSPF, RIP, EIGRP
+
+#### Router0
+```
+enable
+configure terminal
+
+interface gigabitEthernet 0/0
+no shutdown
+exit
+
+interface gigabitEthernet 0/0.11
+encapsulation dot1Q 11
+ip address 192.168.11.1 255.255.255.0
+exit
+
+interface gigabitEthernet 0/0.21
+encapsulation dot1Q 21
+ip address 192.168.21.1 255.255.255.0
+exit
+
+interface gigabitEthernet 0/0.31
+encapsulation dot1Q 31
+ip address 192.168.31.1 255.255.255.0
+exit
+
+interface gigabitEthernet 0/1
+ip address 10.0.11.1 255.255.255.0
+no shutdown
+exit
+
+router ospf 1
+network 192.168.11.0 0.0.0.255 area 0
+network 192.168.21.0 0.0.0.255 area 0
+network 192.168.31.0 0.0.0.255 area 0
+network 10.0.11.0 0.0.0.255 area 0
+exit
+
+end
+wr
+
+show ip route
+show running-config
+show ip interface brief
+```
+
+#### Router1
+```
+enable
+configure terminal
+
+interface GigabitEthernet0/0
+ip address 10.0.11.2 255.255.255.0
+no shutdown
+exit
+
+interface GigabitEthernet0/1
+ip address 10.0.21.1 255.255.255.0
+no shutdown
+exit
+
+router ospf 1
+network 10.0.11.0 0.0.0.255 area 0
+redistribute rip subnets
+exit
+
+router rip
+version 2
+network 10.0.21.0
+redistribute ospf 1 metric 5
+no auto-summary
+exit
+
+end
+wr
+
+show ip route
+show running-config
+show ip interface brief
+```
+
+#### Router2
+
+```
+enable
+configure terminal
+
+interface GigabitEthernet0/0
+ip address 10.0.21.2 255.255.255.0
+no shutdown
+exit
+
+interface GigabitEthernet0/1
+ip address 10.0.31.1 255.255.255.0
+no shutdown
+exit
+
+router rip
+version 2
+network 10.0.21.0
+redistribute eigrp 100 metric 5
+no auto-summary
+exit
+
+router eigrp 100
+network 10.0.31.0 0.0.0.255
+redistribute rip metric 10000 100 255 1 1500
+no auto-summary
+exit
+
+end
+wr
+
+show ip route
+show running-config
+show ip interface brief
+```
+#### Router3
+```
+enable
+configure terminal
+
+interface gigabitEthernet 0/0
+no shutdown
+exit
+
+interface gigabitEthernet 0/0.41
+encapsulation dot1Q 41
+ip address 192.168.41.1 255.255.255.0
+exit
+
+interface gigabitEthernet 0/0.51
+encapsulation dot1Q 51
+ip address 192.168.51.1 255.255.255.0
+exit
+
+interface gigabitEthernet 0/0.61
+encapsulation dot1Q 61
+ip address 192.168.61.1 255.255.255.0
+exit
+
+interface GigabitEthernet0/1
+ip address 10.0.31.2 255.255.255.0
+no shutdown
+exit
+
+router eigrp 100
+network 192.168.41.0 0.0.0.255
+network 192.168.51.0 0.0.0.255
+network 192.168.61.0 0.0.0.255
+network 10.0.31.0 0.0.0.255
+no auto-summary
+exit
+
+end
+wr
+
+show ip route
+show running-config
+show ip interface brief
+```
+
