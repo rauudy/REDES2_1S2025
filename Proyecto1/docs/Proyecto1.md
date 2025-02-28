@@ -57,3 +57,23 @@ end
 wr
 show vtp status
 ```
+
+### Switches servidor - S con STP (rapid-pvst)
+```
+enable
+configure terminal
+spanning-tree mode rapid-pvst
+end
+wr
+show spanning-tree
+```
+
+### Switches clientes - C con STP (rapid-pvst)
+```
+enable
+configure terminal
+spanning-tree mode rapid-pvst
+end
+wr
+show spanning-tree
+```
