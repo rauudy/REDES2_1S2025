@@ -135,3 +135,127 @@ switchport mode trunk
 switchport trunk allowed vlan all  
 no shutdown
 exit
+
+
+
+## LACP Lado Izquierdo
+
+### S1
+
+enable
+configure terminal
+interface range Fa0/1-3
+channel-protocol lacp
+channel-group 1 mode active
+no shutdown
+end 
+wr
+
+show etherchannel
+show etherchannel port-channel
+show interfaces port-channel 1
+
+### C1
+
+enable
+configure terminal
+interface range Fa0/1-3
+channel-protocol lacp
+channel-group 1 mode passive
+no shutdown
+end 
+wr
+
+show etherchannel
+show etherchannel port-channel
+show interfaces port-channel 1
+
+
+### C2
+
+enable
+configure terminal
+interface range Fa0/1-3
+channel-protocol lacp
+channel-group 1 mode active
+no shutdown
+end 
+wr
+
+show etherchannel
+show etherchannel port-channel
+show interfaces port-channel 1
+
+### R5
+
+```
+enable
+configure terminal
+interface range Fa0/1-3
+channel-protocol lacp
+channel-group 1 mode passive
+no shutdown
+end 
+wr
+
+show etherchannel
+show etherchannel port-channel
+show interfaces port-channel 1
+
+enable
+configure terminal
+interface range Fa0/11-13
+channel-protocol lacp
+channel-group 2 mode active
+no shutdown
+end 
+wr
+
+show etherchannel
+show etherchannel port-channel
+show interfaces port-channel 2
+
+```
+
+### R2
+
+```
+enable
+configure terminal
+interface range GigabitEthernet1/0/1-3 
+channel-protocol lacp
+channel-group 1 mode passive
+no shutdown
+end 
+wr
+
+show etherchannel
+show etherchannel port-channel
+show interfaces port-channel 1
+```
+
+
+
+
+## PAGP Lado Derecho
+
+
+### C6
+enable
+configure terminal
+interface range Fa0/1-3
+channel-protocol pagp
+channel-group 1 mode auto
+no shutdown
+end 
+wr
+
+### S2
+enable
+configure terminal
+interface range Fa0/1-3
+channel-protocol pagp
+channel-group 1 mode desirable
+no shutdown
+end 
+wr
