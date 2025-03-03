@@ -239,23 +239,44 @@ show interfaces port-channel 1
 
 ## PAGP Lado Derecho
 
+# Switch R3
+interface range GigabitEthernet1/0/1-3
+ channel-group 1 mode desirable
 
-### C6
-enable
-configure terminal
-interface range Fa0/1-3
-channel-protocol pagp
-channel-group 1 mode auto
-no shutdown
-end 
-wr
+# Switch R6
+interface range FastEthernet0/11-13
+ channel-group 1 mode auto
 
-### S2
-enable
-configure terminal
-interface range Fa0/1-3
-channel-protocol pagp
-channel-group 1 mode desirable
-no shutdown
-end 
-wr
+interface range FastEthernet0/1-3
+ channel-group 3 mode desirable
+
+# Switch C5
+interface range FastEthernet0/1-3
+ channel-group 3 mode auto
+
+# Switch C6
+interface range FastEthernet0/1-3
+ channel-group 2 mode desirable
+
+# Switch S2
+interface range FastEthernet0/1-3
+ channel-group 2 mode auto
+
+
+## Verificacion de la configuracion 
+
+# Ver el estado de los EtherChannels configurados
+show etherchannel summary
+
+# Ver detalles de una interfaz agregada a un canal
+show interfaces port-channel <ID>
+
+# Mostrar información sobre los vecinos PagP
+show pagp neighbor
+
+# Ver los puertos configurados en un EtherChannel
+show etherchannel port-channel
+
+# Revisar la configuración aplicada a las interfaces
+show running-config | section interface
+
