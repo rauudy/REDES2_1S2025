@@ -38,6 +38,7 @@ R = router (switch actua como router no aplicará vtp)
 ```
 enable 
 configure terminal 
+vtp version 2
 vtp domain g37 
 vtp mode server 
 vtp password cisco123 
@@ -50,6 +51,7 @@ show vtp status
 ```
 enable 
 configure terminal 
+vtp version 2
 vtp domain g37 
 vtp mode client 
 vtp password cisco123 
@@ -94,10 +96,9 @@ exit
 
 enable
 configure terminal
-interface range fa0/1-4
-switchport trunk encapsulation dot1q
+interface range fa0/4-6
 switchport mode trunk
-switchport trunk allowed vlan all
+switchport trunk allowed vlan 10,20
 end 
 write memory
 
@@ -307,4 +308,21 @@ show running-config | section interface
 | **192.168.37.32/28** | 255.255.255.240    | 192.168.37.33 - 192.168.37.46 | **R4 - GigabitEthernet1/0/3** |
 | **192.168.37.48/28** | 255.255.255.240    | 192.168.37.49 - 192.168.37.62 | **R6 - FastEthernet0/4** |
 | **192.168.37.64/28** | 255.255.255.240    | 192.168.37.65 - 192.168.37.78 | **R6 - Port-Channel3** |
+
+
+
+
+##
+
+enable
+configure terminal
+interface vlan 30
+no ip address
+shutdown
+end
+wr
+show ip interface brief
+
+
+show running-config
 
