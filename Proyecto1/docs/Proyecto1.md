@@ -242,26 +242,32 @@ show interfaces port-channel 1
 
 # Switch R3
 interface range GigabitEthernet1/0/1-3
- channel-group 1 mode desirable
+channel-protocol pagp
+channel-group 1 mode desirable
 
 # Switch R6
 interface range FastEthernet0/11-13
- channel-group 1 mode auto
+channel-protocol pagp
+channel-group 1 mode auto
 
 interface range FastEthernet0/1-3
- channel-group 3 mode desirable
+channel-protocol pagp
+channel-group 3 mode desirable
 
 # Switch C5
 interface range FastEthernet0/1-3
- channel-group 3 mode auto
+channel-protocol pagp
+channel-group 3 mode auto
 
 # Switch C6
 interface range FastEthernet0/1-3
- channel-group 2 mode desirable
+channel-protocol pagp
+channel-group 2 mode desirable
 
 # Switch S2
 interface range FastEthernet0/1-3
- channel-group 2 mode auto
+channel-protocol pagp
+channel-group 2 mode auto
 
 
 ## Verificacion de la configuracion 
@@ -312,17 +318,154 @@ show running-config | section interface
 
 
 
-##
+## Routing onc OSPF
 
+### R5
 enable
 configure terminal
-interface vlan 30
-no ip address
-shutdown
+ip routing
+
+interface vlan 10
+ip address 192.168.37.1 255.255.255.240
+no shutdown
+exit
+interface vlan 20
+ip address 192.168.37.17 255.255.255.240
+no shutdown
+exit
+interface port-channel 2
+ip address 10.0.37.1 255.255.255.252
+exit
+
+router ospf 1
+network 192.168.37.0 0.0.0.15 area 1
+network 192.168.37.16 0.0.0.15 area 1
+network 10.0.37.0 0.0.0.3 area 1
 end
 wr
-show ip interface brief
+
+### R1
+enable
+configure terminal
+ip routing
+
+interface GigabitEthernet1/0/1
+ip address 10.0.37.26 255.255.255.252
+exit
+interface GigabitEthernet1/0/2
+ip address 10.0.37.29 255.255.255.252
+exit
+interface GigabitEthernet1/1/1
+ip address 10.0.37.21 255.255.255.252
+exit
+interface GigabitEthernet1/1/2
+ip address 10.0.37.6 255.255.255.252
+exit
+
+router ospf 1
+network 10.0.37.24 0.0.0.3 area 1
+network 10.0.37.28 0.0.0.3 area 1
+network 10.0.37.4 0.0.0.3 area 1
+network 10.0.37.20 0.0.0.3 area 1
+end
+wr
+
+### R2
+enable
+configure terminal
+ip routing
+
+interface port-channel 1
+ip address 10.0.37.2 255.255.255.252
+exit
+interface GigabitEthernet1/1/2
+ip address 10.0.37.5 255.255.255.252
+exit
+interface GigabitEthernet1/1/3
+ip address 10.0.37.13 255.255.255.252
+exit
+interface GigabitEthernet1/1/4
+ip address 10.0.37.9 255.255.255.252
+exit
 
 
-show running-config
+router ospf 1
+network 10.0.37.0 0.0.0.3 area 1
+network 10.0.37.4 0.0.0.3 area 1
+network 10.0.37.8 0.0.0.3 area 1
+network 10.0.37.12 0.0.0.3 area 1
+end
+wr
 
+### R3
+enable
+configure terminal
+ip routing
+
+interface port-channel 1
+ip address 10.0.37.33 255.255.255.252
+exit
+interface GigabitEthernet1/1/1
+ip address 10.0.37.18 255.255.255.252
+exit
+interface GigabitEthernet1/1/2
+ip address 10.0.37.22 255.255.255.252
+exit
+interface GigabitEthernet1/1/3
+ip address 10.0.37.10 255.255.255.252
+exit
+
+router ospf 1
+network 10.0.37.32 0.0.0.3 area 1
+network 10.0.37.20 0.0.0.3 area 1
+network 10.0.37.8 0.0.0.3 area 1
+network 10.0.37.16 0.0.0.3 area 1
+end
+wr
+
+### R4
+enable
+configure terminal
+ip routing
+
+interface vlan 30
+ip address 192.168.37.33 255.255.255.240
+no shutdown
+exit
+interface GigabitEthernet1/1/1
+ip address 10.0.37.14 255.255.255.252
+exit
+interface GigabitEthernet1/1/2
+ip address 10.0.37.17 255.255.255.252
+exit
+
+router ospf 1
+network 192.168.37.32 0.0.0.15 area 1
+network 10.0.37.12 0.0.0.3 area 1
+network 10.0.37.16 0.0.0.3 area 1
+end
+wr
+
+### R6
+enable
+configure terminal
+ip routing
+
+interface vlan 10
+ip address 192.168.37.65 255.255.255.240
+no shutdown
+exit
+interface vlan 20
+ip address 192.168.37.49 255.255.255.240
+no shutdown
+exit
+interface port-channel 1
+ip address 10.0.37.34 255.255.255.252
+exit
+
+router ospf 1
+network 192.168.37.48 0.0.0.15 area 1
+network 192.168.37.64 0.0.0.15 area 1
+network 10.0.37.32 0.0.0.3 area 1
+end
+wr
