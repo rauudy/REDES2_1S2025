@@ -472,13 +472,32 @@ wr
 
 # DHCP
 
-
+### R5
 ````
 # Helper Address
-interface fa0/1
-ip helper-address 10.0.10.1
+enable
+configure terminal
+interface vlan 10
+ip helper-address 10.0.37.25
 exit
-interface fa0/2
-ip helper-address 10.0.20.1
+interface vlan 20
+ip helper-address 10.0.37.25
 exit
+end
+wr
+````
+
+### R6
+````
+# Helper Address
+enable
+configure terminal
+interface vlan 10
+ip helper-address 10.0.37.30
+exit
+interface vlan 20
+ip helper-address 10.0.37.30
+exit
+end
+wr
 ````
