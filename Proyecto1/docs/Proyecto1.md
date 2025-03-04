@@ -472,6 +472,14 @@ wr
 
 # DHCP
 
+### DHCP 1
+![imagen](img/dhcp_1.png)
+![imagen](img/dhcp_2.png)
+
+### DHCP 2
+![imagen](img/dhcp_3.png)
+![imagen](img/dhcp_4.png)
+
 ### R5
 ````
 # Helper Address
@@ -501,3 +509,7 @@ exit
 end
 wr
 ````
+
+### Poner dhcp a las PC
+
+![imagen](img/dhcp_5.png)
