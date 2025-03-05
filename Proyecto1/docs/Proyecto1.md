@@ -307,13 +307,13 @@ show running-config | section interface
 
 ## 192.168.37.0/24 Network Segmentation
 
-| **Subnet**         | **Subnet Mask**       | **Usable IPs**            | **Assigned Devices** |
-|--------------------|----------------------|---------------------------|----------------------|
-| **192.168.37.0/28**  | 255.255.255.240    | 192.168.37.1 - 192.168.37.14  | **R5 - Port-Channel1** |
-| **192.168.37.16/28** | 255.255.255.240    | 192.168.37.17 - 192.168.37.30 | **R5 - FastEthernet0/4** |
-| **192.168.37.32/28** | 255.255.255.240    | 192.168.37.33 - 192.168.37.46 | **R4 - GigabitEthernet1/0/3** |
-| **192.168.37.48/28** | 255.255.255.240    | 192.168.37.49 - 192.168.37.62 | **R6 - FastEthernet0/4** |
-| **192.168.37.64/28** | 255.255.255.240    | 192.168.37.65 - 192.168.37.78 | **R6 - Port-Channel3** |
+| **VLAN** | **Subnet**         | **Subnet Mask**       | **Usable IPs**            | **Assigned Devices** |
+|--------------------|--------------------|----------------------|---------------------------|----------------------|
+| Naranja | **192.168.37.0/28**  | 255.255.255.240    | 192.168.37.1 - 192.168.37.14  | **R5 - VLAN 10** |
+| Verde | **192.168.37.16/28** | 255.255.255.240    | 192.168.37.17 - 192.168.37.30 | **R5 - VLAN 20** |
+|  ADMIN | **192.168.37.32/28** | 255.255.255.240    | 192.168.37.33 - 192.168.37.46 | **R4 - VLAN 30** |
+| Verde | **192.168.37.48/28** | 255.255.255.240    | 192.168.37.49 - 192.168.37.62 | **R6 - VLAN 20** |
+| Naranja | **192.168.37.64/28** | 255.255.255.240    | 192.168.37.65 - 192.168.37.78 | **R6 - VLAN 10** |
 
 
 
@@ -513,3 +513,102 @@ wr
 ### Poner dhcp a las PC
 
 ![imagen](img/dhcp_5.png)
+
+
+# ACL
+
+R4
+```
+enable
+configure terminal
+access-list 100 permit ip any any
+
+interface Vlan30
+ip access-group 100 in
+exit
+
+end
+wr
+
+
+show access-lists
+show running-config
+show ip interface Vlan10
+show ip interface Vlan20
+show ip interface Vlan30
+```
+
+R5
+```
+enable
+configure terminal
+access-list 100 permit ip 192.168.37.0 0.0.0.15 192.168.37.0 0.0.0.15
+access-list 100 permit ip 192.168.37.0 0.0.0.15 192.168.37.64 0.0.0.15
+access-list 100 deny ip 192.168.37.0 0.0.0.15 192.168.37.16 0.0.0.15
+access-list 100 deny ip 192.168.37.0 0.0.0.15 192.168.37.32 0.0.0.15
+access-list 100 deny ip 192.168.37.0 0.0.0.15 192.168.37.48 0.0.0.15
+access-list 100 permit ip any any
+
+interface Vlan10
+ip access-group 100 in
+exit
+
+access-list 101 permit ip 192.168.37.16 0.0.0.15 192.168.37.16 0.0.0.15
+access-list 101 permit ip 192.168.37.16 0.0.0.15 192.168.37.48 0.0.0.15
+access-list 101 deny ip 192.168.37.16 0.0.0.15 192.168.37.0 0.0.0.15
+access-list 101 deny ip 192.168.37.16 0.0.0.15 192.168.37.32 0.0.0.15
+access-list 101 deny ip 192.168.37.16 0.0.0.15 192.168.37.64 0.0.0.15
+access-list 101 permit ip any any
+
+interface Vlan20
+ip access-group 101 in
+exit
+
+end
+wr
+
+
+show access-lists
+show running-config
+show ip interface Vlan10
+show ip interface Vlan20
+show ip interface Vlan30
+
+```
+
+R6
+```
+enable
+configure terminal
+access-list 100 permit ip 192.168.37.48 0.0.0.15 192.168.37.48 0.0.0.15
+access-list 100 permit ip 192.168.37.48 0.0.0.15 192.168.37.16 0.0.0.15
+access-list 100 deny ip 192.168.37.48 0.0.0.15 192.168.37.0 0.0.0.15
+access-list 100 deny ip 192.168.37.48 0.0.0.15 192.168.37.32 0.0.0.15
+access-list 100 deny ip 192.168.37.48 0.0.0.15 192.168.37.64 0.0.0.15
+access-list 100 permit ip any any
+
+interface Vlan20
+ip access-group 100 in
+exit
+
+access-list 101 permit ip 192.168.37.64 0.0.0.15 192.168.37.64 0.0.0.15
+access-list 101 permit ip 192.168.37.64 0.0.0.15 192.168.37.0 0.0.0.15
+access-list 101 deny ip 192.168.37.64 0.0.0.15 192.168.37.16 0.0.0.15
+access-list 101 deny ip 192.168.37.64 0.0.0.15 192.168.37.32 0.0.0.15
+access-list 101 deny ip 192.168.37.64 0.0.0.15 192.168.37.48 0.0.0.15
+access-list 101 permit ip any any
+
+interface Vlan10
+ip access-group 101 in
+exit
+
+end
+wr
+
+
+show access-lists
+show running-config
+show ip interface Vlan10
+show ip interface Vlan20
+show ip interface Vlan30
+```
