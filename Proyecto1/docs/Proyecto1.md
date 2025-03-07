@@ -19,7 +19,7 @@
 - Familiarizarse con las configuraciones de DHCP y sus conceptos.
 
 ## Topologia
-![imagen](img/)
+![imagen](img/topologia.png)
 
 
 ## Configuraciones
@@ -83,17 +83,18 @@ show spanning-tree
 
 
 ### Configuracion de Vlans S1
+```
 enable
 configure terminal
 vlan 10
- name 37_Naranja_EdificioIZQ
+name 37_Naranja_EdificioIZQ
 vlan 20
- name 37_Verde_EdificioIZQ
+name 37_Verde_EdificioIZQ
 exit
-
+```
 
 ### Configuracion de puertos trunkales
-
+````
 enable
 configure terminal
 interface range fa0/4-6
@@ -101,9 +102,10 @@ switchport mode trunk
 switchport trunk allowed vlan 10,20
 end 
 write memory
+````
 
 ### Configuracion R4
-
+````
 configure terminal
 vlan 30
 name 37_Admin_Central
@@ -120,9 +122,10 @@ switchport mode trunk
 switchport trunk allowed vlan all  
 no shutdown
 exit
-
+````
 
 ### Configuracion R3
+````
 enable
 configure terminal
 interface range GigabitEthernet1/0/1 - 2  
@@ -136,13 +139,13 @@ switchport mode trunk
 switchport trunk allowed vlan all  
 no shutdown
 exit
-
+````
 
 
 ## LACP Lado Izquierdo
 
 ### S1
-
+````
 enable
 configure terminal
 interface range Fa0/1-3
@@ -155,9 +158,10 @@ wr
 show etherchannel
 show etherchannel port-channel
 show interfaces port-channel 1
+````
 
 ### C1
-
+````
 enable
 configure terminal
 interface range Fa0/1-3
@@ -171,9 +175,9 @@ show etherchannel
 show etherchannel port-channel
 show interfaces port-channel 1
 
-
+````
 ### C2
-
+````
 enable
 configure terminal
 interface range Fa0/1-3
@@ -187,6 +191,7 @@ show etherchannel
 show etherchannel port-channel
 show interfaces port-channel 1
 
+````
 ### R5
 
 ```
@@ -241,37 +246,48 @@ show interfaces port-channel 1
 ## PAGP Lado Derecho
 
 ### Switch R3
+````
 interface range GigabitEthernet1/0/1-3
 channel-protocol pagp
 channel-group 1 mode desirable
 
+````
 ### Switch R6
+````
 interface range FastEthernet0/11-13
 channel-protocol pagp
 channel-group 1 mode auto
+exit
 
 interface range FastEthernet0/1-3
 channel-protocol pagp
 channel-group 3 mode desirable
 
+````
 ### Switch C5
+````
 interface range FastEthernet0/1-3
 channel-protocol pagp
 channel-group 3 mode auto
 
+````
 ### Switch C6
+````
 interface range FastEthernet0/1-3
 channel-protocol pagp
 channel-group 2 mode desirable
 
+````
 ### Switch S2
+````
 interface range FastEthernet0/1-3
 channel-protocol pagp
 channel-group 2 mode auto
 
+````
 
 ## Verificacion de la configuracion 
-
+````
 ### Ver el estado de los EtherChannels configurados
 show etherchannel summary
 
@@ -287,6 +303,7 @@ show etherchannel port-channel
 ### Revisar la configuración aplicada a las interfaces
 show running-config | section interface
 
+````
 # IP Address Allocation Table
 
 ## 10.0.37.0/24 Network Segmentation
@@ -321,6 +338,7 @@ show running-config | section interface
 ## Routing onc OSPF
 
 ### R5
+````
 enable
 configure terminal
 ip routing
@@ -344,7 +362,10 @@ network 10.0.37.0 0.0.0.3 area 1
 end
 wr
 
+````
 ### R1
+
+````
 enable
 configure terminal
 ip routing
@@ -370,7 +391,9 @@ network 10.0.37.20 0.0.0.3 area 1
 end
 wr
 
+````
 ### R2
+````
 enable
 configure terminal
 ip routing
@@ -397,7 +420,9 @@ network 10.0.37.12 0.0.0.3 area 1
 end
 wr
 
+````
 ### R3
+````
 enable
 configure terminal
 ip routing
@@ -423,7 +448,9 @@ network 10.0.37.16 0.0.0.3 area 1
 end
 wr
 
+````
 ### R4
+````
 enable
 configure terminal
 ip routing
@@ -446,7 +473,9 @@ network 10.0.37.16 0.0.0.3 area 1
 end
 wr
 
+````
 ### R6
+````
 enable
 configure terminal
 ip routing
@@ -469,6 +498,7 @@ network 192.168.37.64 0.0.0.15 area 1
 network 10.0.37.32 0.0.0.3 area 1
 end
 wr
+````
 
 # DHCP
 
@@ -517,7 +547,7 @@ wr
 
 # ACL
 
-R4 (VLAN 30- ADMIN)
+## R4 (VLAN 30- ADMIN)
 ```
 enable
 configure terminal
@@ -540,7 +570,7 @@ show ip interface Vlan20
 show ip interface Vlan30
 ```
 
-R5 (VLAN 10 y 20 - Naranja y Verde)
+## R5 (VLAN 10 y 20 - Naranja y Verde)
 ```
 enable
 configure terminal
@@ -584,7 +614,7 @@ show ip interface Vlan30
 
 ```
 
-R6 (VLAN 20 y 10 - Verde y Naranja)
+## R6 (VLAN 20 y 10 - Verde y Naranja)
 ```
 enable
 configure terminal
