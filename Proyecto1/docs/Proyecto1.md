@@ -517,11 +517,17 @@ wr
 
 # ACL
 
-R4
+R4 (VLAN 30- ADMIN)
 ```
 enable
 configure terminal
-access-list 100 permit ip any any
+
+no access-list 100
+access-list 100 permit ip 192.168.37.32 0.0.0.15 192.168.37.16 0.0.0.15
+access-list 100 permit ip 192.168.37.32 0.0.0.15 192.168.37.48 0.0.0.15
+access-list 100 permit ip 192.168.37.32 0.0.0.15 192.168.37.0 0.0.0.15
+access-list 100 permit ip 192.168.37.32 0.0.0.15 192.168.37.64 0.0.0.15
+access-list 100 permit ip any any  
 
 interface Vlan30
 ip access-group 100 in
@@ -538,27 +544,31 @@ show ip interface Vlan20
 show ip interface Vlan30
 ```
 
-R5
+R5 (VLAN 10 y 20 - Naranja y Verde)
 ```
 enable
 configure terminal
+no access-list 100
 access-list 100 permit ip 192.168.37.0 0.0.0.15 192.168.37.0 0.0.0.15
 access-list 100 permit ip 192.168.37.0 0.0.0.15 192.168.37.64 0.0.0.15
 access-list 100 deny ip 192.168.37.0 0.0.0.15 192.168.37.16 0.0.0.15
-access-list 100 deny ip 192.168.37.0 0.0.0.15 192.168.37.32 0.0.0.15
 access-list 100 deny ip 192.168.37.0 0.0.0.15 192.168.37.48 0.0.0.15
-access-list 100 permit ip any any
+access-list 100 deny ip 192.168.37.0 0.0.0.15 192.168.37.32 0.0.0.15
+access-list 100 permit ip 192.168.37.32 0.0.0.15 192.168.37.0 0.0.0.15
+access-list 100 permit ip any any 
 
 interface Vlan10
 ip access-group 100 in
 exit
 
+no access-list 101
 access-list 101 permit ip 192.168.37.16 0.0.0.15 192.168.37.16 0.0.0.15
 access-list 101 permit ip 192.168.37.16 0.0.0.15 192.168.37.48 0.0.0.15
 access-list 101 deny ip 192.168.37.16 0.0.0.15 192.168.37.0 0.0.0.15
-access-list 101 deny ip 192.168.37.16 0.0.0.15 192.168.37.32 0.0.0.15
 access-list 101 deny ip 192.168.37.16 0.0.0.15 192.168.37.64 0.0.0.15
-access-list 101 permit ip any any
+access-list 101 deny ip 192.168.37.16 0.0.0.15 192.168.37.32 0.0.0.15
+access-list 101 permit ip 192.168.37.32 0.0.0.15 192.168.37.16 0.0.0.15
+access-list 101 permit ip any any  
 
 interface Vlan20
 ip access-group 101 in
@@ -576,27 +586,31 @@ show ip interface Vlan30
 
 ```
 
-R6
+R6 (VLAN 20 y 10 - Verde y Naranja)
 ```
 enable
 configure terminal
+no access-list 100
 access-list 100 permit ip 192.168.37.48 0.0.0.15 192.168.37.48 0.0.0.15
 access-list 100 permit ip 192.168.37.48 0.0.0.15 192.168.37.16 0.0.0.15
 access-list 100 deny ip 192.168.37.48 0.0.0.15 192.168.37.0 0.0.0.15
-access-list 100 deny ip 192.168.37.48 0.0.0.15 192.168.37.32 0.0.0.15
 access-list 100 deny ip 192.168.37.48 0.0.0.15 192.168.37.64 0.0.0.15
-access-list 100 permit ip any any
+access-list 100 deny ip 192.168.37.48 0.0.0.15 192.168.37.32 0.0.0.15
+access-list 100 permit ip 192.168.37.32 0.0.0.15 192.168.37.48 0.0.0.15
+access-list 100 permit ip any any   
 
 interface Vlan20
 ip access-group 100 in
 exit
 
+no access-list 101
 access-list 101 permit ip 192.168.37.64 0.0.0.15 192.168.37.64 0.0.0.15
 access-list 101 permit ip 192.168.37.64 0.0.0.15 192.168.37.0 0.0.0.15
 access-list 101 deny ip 192.168.37.64 0.0.0.15 192.168.37.16 0.0.0.15
-access-list 101 deny ip 192.168.37.64 0.0.0.15 192.168.37.32 0.0.0.15
 access-list 101 deny ip 192.168.37.64 0.0.0.15 192.168.37.48 0.0.0.15
-access-list 101 permit ip any any
+access-list 101 deny ip 192.168.37.64 0.0.0.15 192.168.37.32 0.0.0.15
+access-list 101 permit ip 192.168.37.32 0.0.0.15 192.168.37.64 0.0.0.15
+access-list 101 permit ip any any 
 
 interface Vlan10
 ip access-group 101 in
