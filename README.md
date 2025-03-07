@@ -14,7 +14,8 @@ Contiene la primera práctica de la materia, con los siguientes archivos:
 
 ### 🔹 [Proyecto1](Proyecto1/)
 Incluye el primer proyecto del curso:
-- **[`Proyecto1.pkt`](Proyecto1/Proyecto1.pkt)** → Archivo de **Packet Tracer** con la topología inicial del proyecto.
+- **[`Proyecto_1_37.pkt`](Proyecto1/Proyecto_1_37.pkt)** → Archivo de **Packet Tracer** con la topología del proyecto.
+- **[`Proyecto1.md`](Proyecto1/docs/Proyecto1.md)** → Explicación del proyecto y configuraciones.
 
 ---
 
