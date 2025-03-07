@@ -523,10 +523,6 @@ enable
 configure terminal
 
 no access-list 100
-access-list 100 permit ip 192.168.37.32 0.0.0.15 192.168.37.16 0.0.0.15
-access-list 100 permit ip 192.168.37.32 0.0.0.15 192.168.37.48 0.0.0.15
-access-list 100 permit ip 192.168.37.32 0.0.0.15 192.168.37.0 0.0.0.15
-access-list 100 permit ip 192.168.37.32 0.0.0.15 192.168.37.64 0.0.0.15
 access-list 100 permit ip any any  
 
 interface Vlan30
@@ -551,10 +547,11 @@ configure terminal
 no access-list 100
 access-list 100 permit ip 192.168.37.0 0.0.0.15 192.168.37.0 0.0.0.15
 access-list 100 permit ip 192.168.37.0 0.0.0.15 192.168.37.64 0.0.0.15
+access-list 100 permit icmp 192.168.37.0 0.0.0.15 192.168.37.32 0.0.0.15 echo-reply
 access-list 100 deny ip 192.168.37.0 0.0.0.15 192.168.37.16 0.0.0.15
 access-list 100 deny ip 192.168.37.0 0.0.0.15 192.168.37.48 0.0.0.15
 access-list 100 deny ip 192.168.37.0 0.0.0.15 192.168.37.32 0.0.0.15
-access-list 100 permit ip 192.168.37.32 0.0.0.15 192.168.37.0 0.0.0.15
+
 access-list 100 permit ip any any 
 
 interface Vlan10
@@ -564,10 +561,11 @@ exit
 no access-list 101
 access-list 101 permit ip 192.168.37.16 0.0.0.15 192.168.37.16 0.0.0.15
 access-list 101 permit ip 192.168.37.16 0.0.0.15 192.168.37.48 0.0.0.15
+access-list 101 permit icmp 192.168.37.16 0.0.0.15 192.168.37.32 0.0.0.15 echo-reply
 access-list 101 deny ip 192.168.37.16 0.0.0.15 192.168.37.0 0.0.0.15
 access-list 101 deny ip 192.168.37.16 0.0.0.15 192.168.37.64 0.0.0.15
 access-list 101 deny ip 192.168.37.16 0.0.0.15 192.168.37.32 0.0.0.15
-access-list 101 permit ip 192.168.37.32 0.0.0.15 192.168.37.16 0.0.0.15
+
 access-list 101 permit ip any any  
 
 interface Vlan20
@@ -593,10 +591,11 @@ configure terminal
 no access-list 100
 access-list 100 permit ip 192.168.37.48 0.0.0.15 192.168.37.48 0.0.0.15
 access-list 100 permit ip 192.168.37.48 0.0.0.15 192.168.37.16 0.0.0.15
+access-list 100 permit icmp 192.168.37.48 0.0.0.15 192.168.37.32 0.0.0.15 echo-reply
 access-list 100 deny ip 192.168.37.48 0.0.0.15 192.168.37.0 0.0.0.15
 access-list 100 deny ip 192.168.37.48 0.0.0.15 192.168.37.64 0.0.0.15
 access-list 100 deny ip 192.168.37.48 0.0.0.15 192.168.37.32 0.0.0.15
-access-list 100 permit ip 192.168.37.32 0.0.0.15 192.168.37.48 0.0.0.15
+
 access-list 100 permit ip any any   
 
 interface Vlan20
@@ -606,10 +605,11 @@ exit
 no access-list 101
 access-list 101 permit ip 192.168.37.64 0.0.0.15 192.168.37.64 0.0.0.15
 access-list 101 permit ip 192.168.37.64 0.0.0.15 192.168.37.0 0.0.0.15
+access-list 101 permit icmp 192.168.37.64 0.0.0.15 192.168.37.32 0.0.0.15 echo-reply
 access-list 101 deny ip 192.168.37.64 0.0.0.15 192.168.37.16 0.0.0.15
 access-list 101 deny ip 192.168.37.64 0.0.0.15 192.168.37.48 0.0.0.15
 access-list 101 deny ip 192.168.37.64 0.0.0.15 192.168.37.32 0.0.0.15
-access-list 101 permit ip 192.168.37.32 0.0.0.15 192.168.37.64 0.0.0.15
+
 access-list 101 permit ip any any 
 
 interface Vlan10
