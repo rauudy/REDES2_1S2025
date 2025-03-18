@@ -39,7 +39,7 @@ DHCP_SERVERS – 40 + 1 = 41
 
 ### Configuracion de Vlans
  
-### Switch0
+### S1
 ```
 enable
 configure terminal
@@ -49,13 +49,13 @@ vlan 21
 name ESTUDIANTES
 exit
 
-interface fa0/1
+interface fa0/2
 switchport mode access
 switchport access vlan 11
 no shutdown
 exit
 
-interface fa0/2 
+interface fa0/1 
 switchport mode access
 switchport access vlan 21
 no shutdown
@@ -71,7 +71,7 @@ end
 wr
 ```
 
-### Switch3
+### S2
 ```
 enable
 configure terminal
@@ -81,19 +81,19 @@ vlan 41
 name DHCP_SERVERS
 exit
 
-interface fa0/1
+interface fa0/2
 switchport mode access
 switchport access vlan 31
 no shutdown
 exit
 
-interface fa0/2 
+interface fa0/3 
 switchport mode access
 switchport access vlan 41
 no shutdown
 exit
 
-interface fa0/3
+interface fa0/1
 switchport mode trunk
 switchport trunk allowed vlan all  
 no shutdown
