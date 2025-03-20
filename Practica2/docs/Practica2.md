@@ -131,6 +131,59 @@ wr
 | **10.0.37.20/30** | 255.255.255.252      | 10.0.37.21 - 10.0.37.22  | **2**     |
 | **10.0.37.24/30** | 255.255.255.252      | 10.0.37.25 - 10.0.37.26  | **2**     |
 
+
+
+## Configuración de LACP entre edificios
+### Se implementa EtherChannel con LACP en modo activo
+### El Port-Channel se configura como trunk para transportar VLANs
+---
+```
+enable
+configure terminal
+```
+
+### Configuración en Switch 1
+
+***Crear EtherChannel con LACP en los puertos físicos***
+```
+interface range fa0/1 - 4  
+channel-group 1 mode active  # Habilita LACP en modo activo
+exit
+
+! Configurar Port-Channel como trunk
+interface Port-channel1
+ switchport trunk encapsulation dot1q  # Define el encapsulado (si es necesario)
+ switchport mode trunk  # Configura el enlace como trunk
+ switchport trunk allowed vlan 11,21  # Permite solo las VLANs necesarias
+ no shutdown  # Asegura que la interfaz esté activa
+exit
+```
+
+
+### Configuración en Switch 2
+
+```
+! Crear EtherChannel con LACP en los puertos físicos
+interface range fa0/11 - 14  
+ channel-group 1 mode active  # Habilita LACP en modo activo
+exit
+
+! Configurar Port-Channel como trunk
+interface Port-channel1
+ switchport trunk encapsulation dot1q  # Define el encapsulado (si es necesario)
+ switchport mode trunk  # Configura el enlace como trunk
+ switchport trunk allowed vlan 31,41  # Permite solo las VLANs necesarias
+ no shutdown  # Asegura que la interfaz esté activa
+exit
+
+! --------------------------
+! Guardar configuración
+! --------------------------
+end
+wr
+
+```
+
 ## Config VRR Ejemplo
 
 Router 1 (R1):
