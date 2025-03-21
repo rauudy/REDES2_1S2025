@@ -418,83 +418,58 @@ wr
 ```
 
 
-## Config VRR Ejemplo
+## VRRP (HRRP en Packet Tracer - standby)
 
-Router 1 (R1):
-```
-R1(config)# interface GigabitEthernet0/0
-R1(config-if)# ip address 192.168.1.1 255.255.255.0
-R1(config-if)# no shutdown
-```
 
-Router 2 (R2):
+### Router0
 
 ```
-R2(config)# interface GigabitEthernet0/0
-R2(config-if)# ip address 192.168.1.2 255.255.255.0
-R2(config-if)# no shutdown
+enable
+configure terminal
+
+! Configuración para la VLAN ESTUDIANTES-21
+interface GigabitEthernet0/0.21
+standby 21 ip 192.168.37.3
+standby 21 priority 110
+standby 21 preempt
+exit
+
+! Configuración para la VLAN ADMIN-11
+interface GigabitEthernet0/0.11
+standby 11 ip 192.168.37.195
+standby 11 priority 90
+standby 11 preempt
+exit
+
+end
+wr
+
+show standby brief
 
 ```
-2. Configurar HSRP para Redundancia
-
-Crea un grupo HSRP con una dirección virtual compartida que será el gateway predeterminado para los dispositivos de la red.
-En R1 (Activo por Prioridad):
-
+### Router1
 
 ```
-R1(config-if)# standby 1 ip 192.168.1.254     ! Dirección virtual del gateway
-R1(config-if)# standby 1 priority 150         ! Prioridad mayor (default: 100)
-R1(config-if)# standby 1 preempt              ! Recuperar rol activo si se reinicia
-R1(config-if)# standby 1 name Grupo-HSRP      ! Nombre del grupo (opcional)
+enable
+configure terminal
+
+! Configuración para la VLAN ESTUDIANTES-21
+interface GigabitEthernet0/0.21
+standby 21 ip 192.168.37.3
+standby 21 priority 90
+standby 21 preempt
+exit
+
+! Configuración para la VLAN ADMIN-11
+interface GigabitEthernet0/0.11
+standby 11 ip 192.168.37.195
+standby 11 priority 110
+standby 11 preempt
+exit
+
+end
+wr
+
+show standby brief
 
 ```
-En R2 (Standby):
-```
-R2(config-if)# standby 1 ip 192.168.1.254     ! Misma dirección virtual
-R2(config-if)# standby 1 priority 100         ! Prioridad menor
-R2(config-if)# standby 1 preempt              ! Permitir recuperar rol si es necesario
-
-```
-3. Verificar la Configuración
-Comando para ver el estado de HSRP:
-
-```
-R1# show standby brief
-
-Salida Esperada:
-bash
-Copy
-
-Interface   Grp  Priority State    Active          Standby         Virtual IP
-Gi0/0       1    150      Active   local           192.168.1.2     192.168.1.254
-
-    State: Active (R1) y Standby (R2).
-
-    Virtual IP: 192.168.1.254 será el gateway para los dispositivos de la red.
-
-```
-4. Simular una Falla en R1
-
-Desconecta R1 o apaga su interfaz para probar la redundancia:
-
-```
-R1(config-if)# shutdown
-
-```
-En R2 (ahora Activo):
-```
-R2# show standby brief
-
-```
-```
-Interface   Grp  Priority State    Active          Standby         Virtual IP
-Gi0/0       1    100      Active   local           unknown         192.168.1.254
-
-```
-
-
-
-
-
-
-
