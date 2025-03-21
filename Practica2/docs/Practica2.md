@@ -184,6 +184,27 @@ wr
 
 ```
 
+switch central (12)
+```
+enable
+conf term
+interface range fa0/1-4
+channel-protocol lacp
+exit
+
+interface range fa0/11-14
+channel-protocol lacp
+exit
+
+interface range fa0/21-24
+channel-protocol lacp
+
+end 
+
+wr
+```
+
+
 ## Config VRR Ejemplo
 
 Router 1 (R1):
