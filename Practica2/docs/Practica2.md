@@ -184,6 +184,240 @@ wr
 
 ```
 
+switch central (12)
+```
+enable
+conf term
+interface range fa0/1-4
+channel-protocol lacp
+exit
+
+interface range fa0/11-14
+channel-protocol lacp
+exit
+
+interface range fa0/21-24
+channel-protocol lacp
+
+end 
+
+wr
+```
+
+## Configuracion Enutamiento (EIRGP)
+
+
+#### Multilyer SW1
+
+```
+enable
+configure terminal
+ip routing
+interface port-channel 1
+no switchport
+ip address 10.0.37.5 255.255.255.252
+no shutdown
+exit
+
+interface fa0/11
+no switchport
+ip address 10.0.37.1 255.255.255.252
+exit
+
+router eigrp 100
+network 10.0.37.0 0.0.0.3
+network 10.0.37.4 0.0.0.3
+no auto-summary
+exit
+
+end 
+wr
+```
+
+#### Multilyer SW0
+
+```
+enable
+configure terminal
+ip routing
+interface port-channel 1
+no switchport
+ip address 10.0.37.6 255.255.255.252
+no shutdown
+exit
+
+interface port-channel 2
+no switchport
+ip address 10.0.37.25 255.255.255.252
+no shutdown
+exit
+
+interface port-channel 3
+no switchport
+ip address 10.0.37.17 255.255.255.252
+no shutdown
+exit
+
+interface gig0/1
+no switchport
+ip address 10.0.37.9 255.255.255.252
+exit
+
+interface gig0/2
+no switchport
+ip address 10.0.37.13 255.255.255.252
+exit
+
+router eigrp 100
+network 10.0.37.4 0.0.0.3
+network 10.0.37.8 0.0.0.3
+network 10.0.37.12 0.0.0.3
+network 10.0.37.16 0.0.0.3
+network 10.0.37.24 0.0.0.3
+no auto-summary
+exit
+
+end 
+wr
+```
+
+#### Multilyer SW2
+
+```
+enable
+configure terminal
+ip routing
+interface port-channel 1
+no switchport
+ip address 10.0.37.18 255.255.255.252
+no shutdown
+exit
+
+interface fa0/11
+no switchport
+ip address 10.0.37.21 255.255.255.252
+exit
+
+router eigrp 100
+network 10.0.37.16 0.0.0.3
+network 10.0.37.20 0.0.0.3
+no auto-summary
+exit
+
+end 
+wr
+```
+
+#### Multilyer SW3
+
+```
+enable
+configure terminal
+ip routing
+interface port-channel 1
+no switchport
+ip address 10.0.37.26 255.255.255.252
+no shutdown
+exit
+
+interface fa0/11
+no switchport
+no shutdown
+exit
+
+interface vlan 31
+ip address 192.168.100.1 255.255.255.128
+no shutdown
+exit
+
+interface vlan 41
+ip address 192.168.100.129 255.255.255.128
+no shutdown
+exit
+
+router eigrp 100
+network 10.0.37.24 0.0.0.3
+network 192.168.100.0 0.0.0.127
+network 192.168.100.128 0.0.0.127
+no auto-summary
+exit
+
+end 
+wr
+```
+
+#### Router0
+
+```
+enable
+configure terminal
+
+interface gig0/1
+ip address 10.0.37.10 255.255.255.252
+no shutdown
+exit
+
+interface gigabitEthernet 0/0
+no shutdown
+exit
+
+interface gigabitEthernet 0/0.21
+encapsulation dot1Q 21
+ip address 192.168.37.1 255.255.255.192
+exit
+
+interface gigabitEthernet 0/0.11
+encapsulation dot1Q 11
+ip address 192.168.37.193 255.255.255.240
+exit
+
+router eigrp 100
+network 10.0.37.8 0.0.0.3
+network 192.168.37.0 0.0.0.63
+network 192.168.37.192 0.0.0.15
+no auto-summary
+exit
+
+end 
+wr
+```
+
+#### Router1
+```
+enable
+configure terminal
+
+interface gig0/1
+ip address 10.0.37.14 255.255.255.252
+no shutdown
+exit
+
+interface gigabitEthernet 0/0
+no shutdown
+exit
+
+interface gigabitEthernet 0/0.21
+encapsulation dot1Q 21
+ip address 192.168.37.2 255.255.255.192
+exit
+
+interface gigabitEthernet 0/0.11
+encapsulation dot1Q 11
+ip address 192.168.37.194 255.255.255.240
+exit
+
+router eigrp 100
+network 10.0.37.12 0.0.0.3
+network 192.168.37.0 0.0.0.63
+network 192.168.37.192 0.0.0.15
+no auto-summary
+exit
+
+end 
+wr
+```
+
+
 ## Config VRR Ejemplo
 
 Router 1 (R1):
@@ -257,3 +491,10 @@ Interface   Grp  Priority State    Active          Standby         Virtual IP
 Gi0/0       1    100      Active   local           unknown         192.168.1.254
 
 ```
+
+
+
+
+
+
+
