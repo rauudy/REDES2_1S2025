@@ -473,3 +473,51 @@ wr
 show standby brief
 
 ```
+
+
+### Configuracion Inalambrica
+
+### Configuración Inalámbrica (Grupo 37)
+
+### Piso 2
+
+---
+
+La red inalámbrica del Piso 2, identificada con el SSID PISO_2_G37, está configurada con el broadcast desactivado, lo que impide que la red sea visible en la lista de redes disponibles. Esta configuración busca incrementar la seguridad al requerir que los usuarios conozcan y configuren manualmente el nombre del SSID y la contraseña de acceso (G37_PISO2). Se emplea el protocolo de seguridad WPA2 Personal con cifrado AES, brindando una comunicación protegida entre el router y los dispositivos. Esta estrategia simula un entorno de red restringido o interno, en donde el acceso debe estar limitado únicamente a usuarios autorizados con información previa.
+
+| Parámetro             | Piso 1           |
+|------------------------|-----------------|
+| **SSID**               | PISO_2_G37      |
+| **Broadcast**          | No              |
+| **Seguridad**          | WPA2 Personal   |
+| **Contraseña RED**     | G37_PISO2       |
+| **Contraseña Router**  | Grupo37_P2      |
+
+
+En contraste, la red del Piso 3, con el SSID PISO_3_G37, tiene habilitado el broadcast, lo que permite que sea detectada automáticamente por los dispositivos inalámbricos en las cercanías. Esto facilita la conexión de los usuarios al no requerir la configuración manual del nombre de la red. Al igual que en el Piso 2, se utiliza WPA2 Personal como mecanismo de seguridad con cifrado AES y una clave de acceso personalizada (G37_PISO3). Esta configuración representa un entorno de red más accesible, adecuado para áreas comunes o espacios en los que se espera mayor conectividad sin sacrificar la seguridad de los datos transmitidos.
+
+
+### Piso 3
+---
+
+| Parámetro             | Piso 3           |
+|------------------------|-----------------|
+| **SSID**               | PISO_3_G37      |
+| **Broadcast**          | Si              |
+| **Seguridad**          | WPA2 Personal   |
+| **Contraseña RED**     | G37_PISO3       |
+| **Contraseña Router**  | Grupo37_P3      |
+
+
+### DHCP para Rowters WiFi
+
+| Parámetro                | Router Piso 2                  | Router Piso 3                  |
+|--------------------------|--------------------------------|--------------------------------|
+| **Red/Subred**           | 192.168.37.64/26               | 192.168.37.128/26              |
+| **Dirección del Router** | 192.168.37.65                  | 192.168.37.129                 |
+| **Máscara de Subred**    | 255.255.255.192                | 255.255.255.192                |
+| **Rango DHCP**           | 192.168.37.66 – 192.168.37.126 | 192.168.37.130 – 192.168.37.190|
+| **IP de Broadcast**      | 192.168.37.127                 | 192.168.37.191                 |
+| **DNS Server**           | 8.8.8.8                        | 8.8.8.8                        |
+| **Gateway (Default)**    | 192.168.37.65                  | 192.168.37.129                 |
+
