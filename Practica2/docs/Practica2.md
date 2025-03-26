@@ -562,8 +562,9 @@ En contraste, la red del Piso 3, con el SSID PISO_3_G37, tiene habilitado el bro
 
 
 
-### SERVER DHCP
+## Coniguracion DHCP
 
+### SW3
 ```
 !Switch 3
 enable
@@ -583,7 +584,7 @@ end
 wr
 
 ```
-
+### SW2
 ```
 !S2
 enable
@@ -595,4 +596,48 @@ wr
 
 ```
 
+### Server DHCP
 
+#### IP
+![imagen](img/ip_server_dhcp.png)
+
+### Pools
+
+![imagen](img/server_dhcp_PoolAdmin.png)
+![imagen](img/server_dhcp_PoolEstudiantes.png)
+
+### Router0
+```
+! Helper Address
+enable
+configure terminal
+interface GigabitEthernet0/0.11
+ip helper-address 192.168.100.130
+exit
+interface GigabitEthernet0/0.21
+ip helper-address 192.168.100.130
+exit
+end
+wr
+
+```
+
+### Router1
+```
+! Helper Address
+enable
+configure terminal
+interface GigabitEthernet0/0.11
+ip helper-address 192.168.100.130
+exit
+interface GigabitEthernet0/0.21
+ip helper-address 192.168.100.130
+exit
+end
+wr
+
+```
+
+### PC's
+![imagen](img/pc0_ip-dhcp.png)
+![imagen](img/laptop0_ip-dhcp.png)
