@@ -560,3 +560,39 @@ En contraste, la red del Piso 3, con el SSID PISO_3_G37, tiene habilitado el bro
     * Address: Dirección IP del ServerWeb, por ejemplo 192.168.100.10
     * Presionar Add.
 
+
+
+### SERVER DHCP
+
+```
+!Switch 3
+enable
+configure terminal
+vlan 31
+name WEB_SERVERS
+vlan 41
+name DHCP_SERVERS
+exit
+
+interface fa0/11
+switchport
+switchport mode trunk
+switchport trunk allowed vlan all
+
+end
+wr
+
+```
+
+```
+!S2
+enable
+configure terminal
+interface fa0/1
+switchport trunk allowed vlan all
+end
+wr
+
+```
+
+
