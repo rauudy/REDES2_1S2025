@@ -184,25 +184,79 @@ wr
 
 ```
 
-switch central (12)
+switch central
 ```
 enable
 conf term
 interface range fa0/1-4
 channel-protocol lacp
+channel-group 1 mode passive
+no shutdown
 exit
 
 interface range fa0/11-14
 channel-protocol lacp
+channel-group 1 mode passive
+no shutdown
 exit
 
 interface range fa0/21-24
 channel-protocol lacp
+channel-group 1 mode passive
+no shutdown
 
 end 
 
 wr
 ```
+
+
+switch izquierdo
+```
+enable
+conf term
+interface range fa0/1-4
+channel-protocol lacp
+channel-group 1 mode active
+no shutdown
+exit
+
+end 
+
+wr
+```
+
+
+switch derecho
+```
+enable
+conf term
+interface range fa0/1-4
+channel-protocol lacp
+channel-group 1 mode active
+no shutdown
+exit
+
+end 
+
+wr
+```
+
+switch arriba 
+```
+enable
+conf term
+interface range fa0/1-4
+channel-protocol lacp
+channel-group 1 mode active
+no shutdown
+exit
+
+end 
+
+wr
+```
+
 
 ## Configuracion Enutamiento (EIRGP)
 
