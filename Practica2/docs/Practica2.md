@@ -521,46 +521,6 @@ En contraste, la red del Piso 3, con el SSID PISO_3_G37, tiene habilitado el bro
 | **DNS Server**           | 8.8.8.8                        | 8.8.8.8                        |
 | **Gateway (Default)**    | 192.168.37.65                  | 192.168.37.129                 |
 
-### DNS Configuration
-
-1. Asignar direccion IP estatica al Servidor:
-    * IP: 192.168.100.10
-    * Subnet mask: 255.255.255.128
-    * Default Gateway: Dirección IP del router o switch multilayer que conecta al servidor.
-
-2. Activar el servicio HTTP
-    * En services seleccionar HTTP y asegurarse que el servicio esta encendido
-
-3. Editar el contenido de la pagina web:
-
-```html
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Grupo 37</title>
-</head>
-<body>
-  <h1>Bienvenidos a la Práctica 2</h1>
-  <p>Integrantes del Grupo 37:</p>
-  <ul>
-    <li> Alejandro Rene Caballeros Gonzales - 201903549</li>
-    <li> Christtopher Jose Chitay Coutino - 201113851</li>
-    <li> Raudy David Cabrera Contreras - 201901973</li>
-  </ul>
-</body>
-</html>
-```
-
-### Configurar el Servidor DNS (ServerDHCP o ServerDNS)
-
-1. Ir Services > DNS y encender el servicio ON
-
-2. En el campo de configuracion de dominio agregar:
-    * Name: www.practica2_Grupo37.com
-    * Address: Dirección IP del ServerWeb, por ejemplo 192.168.100.10
-    * Presionar Add.
-
-
 
 ## Coniguracion DHCP
 
@@ -641,3 +601,85 @@ wr
 ### PC's
 ![imagen](img/pc0_ip-dhcp.png)
 ![imagen](img/laptop0_ip-dhcp.png)
+
+
+
+
+
+## DNS Configuration
+
+1. Asignar direccion IP estatica al Servidor:
+    * IP: 192.168.100.2
+    * Subnet mask: 255.255.255.128
+    * Default Gateway: Dirección IP del router o switch multilayer que conecta al servidor.
+![imagen](img/ip_server_dns.png)
+
+
+2. Activar el servicio HTTP
+    * En services seleccionar HTTP y asegurarse que el servicio esta encendido
+
+![imagen](img/server_dns_activar_http.png)
+
+3. Editar el contenido de la pagina web y darle **save**:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Grupo 37</title>
+</head>
+<body>
+  <h1>Bienvenidos a la Práctica 2</h1>
+  <p>Integrantes del Grupo 37:</p>
+  <ul>
+    <li> Alejandro Rene Caballeros Gonzales - 201903549</li>
+    <li> Christtopher Jose Chitay Coutino - 201113851</li>
+    <li> Raudy David Cabrera Contreras - 201901973</li>
+  </ul>
+</body>
+</html>
+```
+![imagen](img/server_dns_editarIndex.png)
+
+### Configurar el Servidor DNS (ServerDHCP o ServerDNS)
+
+1. Ir Services > DNS y encender el servicio ON
+
+2. En el campo de configuracion de dominio agregar:
+    * Name: www.practica2_Grupo37.com
+    * Address: Dirección IP del ServerWeb, por ejemplo 192.168.100.2
+    * Presionar Add.
+
+![imagen](img/server_dns_dominio.png)
+
+
+
+### Actualizar los Pool del Server DHCP en la propiedad DNS
+
+Irse al Servidor DHCP y actuacilar la el dns
+
+![imagen](img/server_dns_UpdatePools.png)
+
+### Actualizar DNS de Wirless Router 1
+
+![imagen](img/server_dns_UpdateWR1.png)
+
+### Actualizar DNS de Wirless Router 0
+
+![imagen](img/server_dns_UpdateWR0.png)
+
+### Actualizar DNS de todas las PC
+
+![imagen](img/server_dns_UpdateDHCP_pcs.png)
+
+### Prueba DNS
+
+Ingresar a PC > Desktop > Web Browser
+
+Y poner esta URL
+```
+http://www.practica2_Grupo37.com
+```
+Darle "Go"
+
+![imagen](img/server_dns_prueba.png)
