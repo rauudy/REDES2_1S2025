@@ -610,7 +610,7 @@ En contraste, la red del Piso 3, con el SSID PISO_3_G37, tiene habilitado el bro
 | **Máscara de Subred**    | 255.255.255.192                | 255.255.255.192                |
 | **Rango DHCP**           | 192.168.37.66 – 192.168.37.126 | 192.168.37.130 – 192.168.37.190|
 | **IP de Broadcast**      | 192.168.37.127                 | 192.168.37.191                 |
-| **DNS Server**           | 8.8.8.8                        | 8.8.8.8                        |
+| **DNS Server**           | 192.168.100.2                  | 192.168.100.2                  |
 | **Gateway (Default)**    | 192.168.37.65                  | 192.168.37.129                 |
 
 

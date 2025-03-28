@@ -19,8 +19,8 @@ Incluye el primer proyecto del curso:
 
 ### 🔻 [Practica 2](Practica2/)
 Incluye la segunda practica del curso:
-- **[`Practica2_37.pkt`](Practica2/Practica_2_37.pkt)** → Archivo de **Packet Tracer** con la topología del proyecto.
-- **[`Practica2.md`](Practica2/docs/Proyecto1.md)** → Explicación de la practica y configuraciones.
+- **[`Practica2_37.pkt`](Practica2/Practica_2_37.pkt)** → Archivo de **Packet Tracer** con la topología de la práctica.
+- **[`Practica2.md`](Practica2/docs/Practica2.md)** → Explicación de la practica y configuraciones.
 
 ---
 
