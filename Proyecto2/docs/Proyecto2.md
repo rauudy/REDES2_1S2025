@@ -1,3 +1,5 @@
+# Documentación Proyecto 2 - Redes 2
+
 ## Objetivo del Diseño de ISP 2
 
 El propósito de la implementación para ISP 2 es diseñar una red jerárquica eficiente y segmentada, capaz de conectar múltiples áreas funcionales mediante el uso de VLANs, subredes optimizadas y protocolos de enrutamiento dinámico. Esta red debe permitir la comunicación segura y eficiente entre departamentos como Facturación y Ventas, utilizando infraestructura física robusta con redundancia (mediante LACP) y escalabilidad.
@@ -62,3 +64,314 @@ A continuación se detalla el costo aproximado del equipo necesario para la impl
 - Los precios son estimados y pueden variar según el proveedor.
 - No se incluyen costos de licencias, servidores adicionales ni servicios de instalación.
 - La infraestructura está diseñada para soportar crecimiento futuro con mínima inversión adicional.
+
+
+
+
+## Configuración ISP-3
+
+Subredes
+
+| #   | Hosts | Subred           | Máscara         | Primer Host     | Último Host      | Broadcast        |
+|-----|-------|------------------|-----------------|-----------------|-----------------|------------------|
+| 1   | 30    | 192.168.31.0 /27 | 255.255.255.224 | 192.168.31.1    | 192.168.31.30   | 192.168.31.31    |
+| 2   | 30    | 192.168.31.32 /27 | 255.255.255.224 | 192.168.31.33   | 192.168.31.62   | 192.168.31.63    |
+| 3   | 30    | 192.168.31.64 /27 | 255.255.255.224 | 192.168.31.65   | 192.168.31.94   | 192.168.31.95    |
+| 4   | 2     | 192.168.31.96 /30 | 255.255.255.252 | 192.168.31.97   | 192.168.31.98   | 192.168.31.99    |
+| 5   | 2     | 192.168.31.100/30 | 255.255.255.252 | 192.168.31.101  | 192.168.31.102  | 192.168.31.103   |
+| 6   | 2     | 192.168.31.104/30 | 255.255.255.252 | 192.168.31.105  | 192.168.31.106  | 192.168.31.107   |
+| 7   | 2     | 192.168.31.108/30 | 255.255.255.252 | 192.168.31.109  | 192.168.31.110  | 192.168.31.111   |
+| 8   | 2     | 192.168.31.112/30 | 255.255.255.252 | 192.168.31.113  | 192.168.31.114  | 192.168.31.115   |
+
+## VTP y VLANS
+
+### Switch0 servidor
+```
+!vtp
+enable
+configure terminal
+vtp version 2
+vtp domain g37_isp3
+vtp mode server
+vtp password g37_isp3
+
+!vlans
+vlan 30
+name Soporte
+vlan 35
+name Seguridad
+
+!trunk
+interface range fa0/1-4
+switchport mode trunk
+switchport trunk allowed vlan all
+exit
+
+! spanning-tree
+spanning-tree mode rapid-pvst 
+
+end
+wr
+
+```
+
+### Switch1 cliente Soporte y propagación de VLANs
+```
+enable
+configure terminal
+vtp version 2
+vtp domain g37_isp3
+vtp mode client
+vtp password g37_isp3
+
+!trunk
+interface range fa0/1-2
+switchport mode trunk
+switchport trunk allowed vlan all
+exit
+
+!access
+interface range Fa0/3-5
+switchport mode access
+switchport access vlan 30
+exit
+
+! spanning-tree
+spanning-tree mode rapid-pvst 
+
+end
+wr
+```
+
+### Switch2 cliente Seguridad y propagación de VLANs
+```
+enable
+configure terminal
+vtp version 2
+vtp domain g37_isp3
+vtp mode client
+vtp password g37_isp3
+
+!trunk
+interface range fa0/1-2
+switchport mode trunk
+switchport trunk allowed vlan all
+exit
+
+!access
+interface range Fa0/3-4
+switchport mode access
+switchport access vlan 35
+exit
+
+! spanning-tree
+spanning-tree mode rapid-pvst
+
+end
+wr
+```
+
+
+### Router1
+
+```
+enable
+configure terminal
+
+interface GigabitEthernet0/0
+ip address 192.168.31.109 255.255.255.252
+no shutdown
+exit
+
+interface GigabitEthernet0/1
+no shutdown
+exit
+
+! Configuración para la VLAN Soporte-30
+interface GigabitEthernet0/1.30
+encapsulation dot1Q 30
+standby 30 ip 192.168.31.33
+standby 30 priority 110
+standby 30 preempt
+exit
+
+! Configuración para la VLAN Seguridad-35
+interface GigabitEthernet0/1.35
+encapsulation dot1Q 35
+standby 35 ip 192.168.31.65
+standby 35 priority 90
+standby 35 preempt
+exit
+
+!ospf
+router ospf 1
+network 192.168.31.32 0.0.0.31 area 1
+network 192.168.31.64 0.0.0.31 area 1
+network 192.168.31.108 0.0.0.3 area 1
+
+end
+wr
+
+show standby brief
+
+```
+### Router2
+
+```
+enable
+configure terminal
+
+interface GigabitEthernet0/0
+ip address 192.168.31.113 255.255.255.252
+no shutdown
+exit
+
+interface GigabitEthernet0/1
+no shutdown
+exit
+
+! Configuración para la VLAN Soporte-30
+interface GigabitEthernet0/1.30
+encapsulation dot1Q 30
+standby 30 ip 192.168.31.33
+standby 30 priority 90
+standby 30 preempt
+exit
+
+! Configuración para la VLAN Seguridad-35
+interface GigabitEthernet0/1.35
+encapsulation dot1Q 35
+standby 35 ip 192.168.31.65
+standby 35 priority 110
+standby 35 preempt
+exit
+
+!ospf
+router ospf 1
+network 192.168.31.32 0.0.0.31 area 1
+network 192.168.31.64 0.0.0.31 area 1
+network 192.168.31.112 0.0.0.3 area 1
+
+end
+wr
+
+show standby brief
+
+```
+
+
+### R-MSW2
+````
+enable
+configure terminal
+ip routing
+
+interface range Fa0/1-3
+channel-protocol lacp
+channel-group 1 mode active
+no shutdown
+exit
+
+interface port-channel 1
+ip address 192.168.31.101 255.255.255.252
+exit
+
+interface GigabitEthernet0/1
+ip address 192.168.31.105 255.255.255.252
+no shutdown
+exit
+
+interface Fa0/4
+ip address 192.168.31.110 255.255.255.252
+no shutdown
+exit
+
+interface Fa0/5
+ip address 192.168.31.114 255.255.255.252
+no shutdown
+exit
+
+router ospf 1
+network 192.168.31.100 0.0.0.3 area 1
+network 192.168.31.104 0.0.0.3 area 1
+network 192.168.31.108 0.0.0.3 area 1
+network 192.168.31.112 0.0.0.3 area 1
+
+end
+wr
+
+````
+
+
+### R-MSW1
+````
+enable
+configure terminal
+ip routing
+
+interface range Fa0/4-6
+channel-protocol lacp
+channel-group 1 mode active
+no shutdown
+exit
+
+interface port-channel 1
+ip address 192.168.31.97 255.255.255.252
+exit
+
+interface GigabitEthernet0/1
+ip address 192.168.31.106 255.255.255.252
+no shutdown
+exit
+
+interface GigabitEthernet0/2
+ip address 192.168.31.1 255.255.255.252
+no shutdown
+exit
+
+
+router ospf 1
+network 192.168.31.96 0.0.0.3 area 1
+network 192.168.31.104 0.0.0.3 area 1
+network 192.168.31.0 0.0.0.31 area 1
+end
+wr
+
+````
+
+
+### R-MSW0
+````
+enable
+configure terminal
+ip routing
+
+interface range Fa0/1-3
+channel-protocol lacp
+channel-group 1 mode passive
+no shutdown
+exit
+
+interface range Fa0/4-6
+channel-protocol lacp
+channel-group 2 mode passive
+no shutdown
+exit
+
+interface port-channel 1
+ip address 192.168.31.102 255.255.255.252
+exit
+
+interface port-channel 2
+ip address 192.168.31.98 255.255.255.252
+exit
+
+
+router ospf 1
+network 192.168.31.96 0.0.0.3 area 1
+network 192.168.31.100 0.0.0.3 area 1
+
+end
+wr
+
+````
