@@ -402,16 +402,16 @@ El servicio DNS (Domain Name System) fue implementado para permitir la resoluci√
 </div>
 
 1. ***Asignar direccion IP estatica al Servidor***:
-    * IP: 192.168.100.2
-    * Subnet mask: 255.255.255.128
+    * IP: 192.168.31.2
+    * Subnet mask: 255.255.255.224
     * Default Gateway: Direcci√≥n IP del router o switch multilayer que conecta al servidor.
-![imagen](img/ip_server_dns.png)
+![imagen](img/dns/ip_server_dns.png)
 
 
 2. ***Activar el servicio HTTP***:
     * En services seleccionar HTTP y asegurarse que el servicio esta encendido
 
-![imagen](img/server_dns_activar_http.png)
+![imagen](img/dns/server_dns_activar_http.png)
 
 3. ***Editar el contenido de la pagina web y darle save***:
 
@@ -422,7 +422,7 @@ El servicio DNS (Domain Name System) fue implementado para permitir la resoluci√
   <title>Grupo 37</title>
 </head>
 <body>
-  <h1>Bienvenidos a la Pr√°ctica 2</h1>
+  <h1>Bienvenidos al Proyecto 2</h1>
   <p>Integrantes del Grupo 37:</p>
   <ul>
     <li> Alejandro Rene Caballeros Gonzales - 201903549</li>
@@ -432,18 +432,18 @@ El servicio DNS (Domain Name System) fue implementado para permitir la resoluci√
 </body>
 </html>
 ```
-![imagen](img/server_dns_editarIndex.png)
+![imagen](img/dns/server_dns_editarIndex.png)
 
 ### Configurar el Servidor DNS (ServerDHCP o ServerDNS)
 
 1. Ir Services > DNS y encender el servicio ON
 
 2. En el campo de configuracion de dominio agregar:
-    * Name: www.practica2_Grupo37.com
-    * Address: Direcci√≥n IP del ServerWeb, por ejemplo 192.168.100.2
+    * Name: www.Proyecto2_Grupo37.com
+    * Address: Direcci√≥n IP del ServerWeb, por ejemplo 192.168.31.2
     * Presionar Add.
 
-![imagen](img/server_dns_dominio.png)
+![imagen](img/dns/server_dns_dominio.png)
 
 
 
@@ -451,19 +451,19 @@ El servicio DNS (Domain Name System) fue implementado para permitir la resoluci√
 
 Irse al Servidor DHCP y actuacilar la el dns
 
-![imagen](img/server_dns_UpdatePools.png)
+![imagen](img/dns/server_dns_UpdatePools.png)
 
 ### Actualizar DNS de Wirless Router 1
 
-![imagen](img/server_dns_UpdateWR1.png)
+![imagen](img/dns/server_dns_UpdateWR1.png)
 
 ### Actualizar DNS de Wirless Router 0
 
-![imagen](img/server_dns_UpdateWR0.png)
+![imagen](img/dns/server_dns_UpdateWR0.png)
 
 ### Actualizar DNS de todas las PC
 
-![imagen](img/server_dns_UpdateDHCP_pcs.png)
+![imagen](img/dns/server_dns_UpdateDHCP_pcs.png)
 
 ### Prueba DNS
 
@@ -471,8 +471,8 @@ Ingresar a PC > Desktop > Web Browser
 
 Y poner esta URL
 ```
-http://www.practica2_Grupo37.com
+http://www.Proyecto2_Grupo37.com
 ```
 Darle "Go"
 
-![imagen](img/server_dns_prueba.png)
+![imagen](img/dns/server_dns_prueba.png)
