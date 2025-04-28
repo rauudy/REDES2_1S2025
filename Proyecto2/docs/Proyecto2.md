@@ -478,5 +478,207 @@ Darle "Go"
 ![imagen](img/dns/server_dns_prueba.png)
 
 
-## ISP 1
+## Configuracion ISP 1
 
+### Subneteo
+
+| #   | Hosts | Subred            | Máscara         | Primer Host      | Último Host       | Broadcast         |
+|-----|-------|-------------------|-----------------|------------------|-------------------|-------------------|
+| 1   | 30    | 192.168.11.0 /27  | 255.255.255.224 | 192.168.11.1     | 192.168.11.30    | 192.168.11.31     |
+| 2   | 30    | 192.168.11.32 /27 | 255.255.255.224 | 192.168.11.33    | 192.168.11.62    | 192.168.11.63     |
+| 3   | 30    | 192.168.11.64 /27 | 255.255.255.224 | 192.168.11.65    | 192.168.11.94    | 192.168.11.95     |
+| 4   | 30    | 192.168.11.96 /27 | 255.255.255.224 | 192.168.11.97    | 192.168.11.126   | 192.168.11.127    |
+| 5   | 2     | 192.168.11.128/30 | 255.255.255.252 | 192.168.11.129   | 192.168.11.130   | 192.168.11.131    |
+| 6   | 2     | 192.168.11.132/30 | 255.255.255.252 | 192.168.11.133   | 192.168.11.134   | 192.168.11.135    |
+| 7   | 2     | 192.168.11.136/30 | 255.255.255.252 | 192.168.11.137   | 192.168.11.138   | 192.168.11.139    |
+| 8   | 2     | 192.168.11.140/30 | 255.255.255.252 | 192.168.11.141   | 192.168.11.142   | 192.168.11.143    |
+
+
+### R-MSW0
+````
+enable
+configure terminal
+ip routing
+
+interface range Fa0/1-3
+channel-protocol lacp
+channel-group 1 mode passive
+no switchport
+no shutdown
+exit
+
+interface range Fa0/4-6
+channel-protocol lacp
+channel-group 2 mode passive
+no switchport
+no shutdown
+exit
+
+interface port-channel 1
+no switchport
+ip address 192.168.11.129 255.255.255.252
+exit
+
+interface port-channel 2
+no switchport
+ip address 192.168.11.137 255.255.255.252
+exit
+
+interface Fa0/7
+no switchport
+ip address 192.168.11.133 255.255.255.252
+no shutdown
+exit
+
+interface Fa0/8
+no switchport
+ip address 192.168.11.141 255.255.255.252
+no shutdown
+exit
+
+router eigrp 100
+network 192.168.11.128 0.0.0.3
+network 192.168.11.132 0.0.0.3
+network 192.168.11.136 0.0.0.3
+network 192.168.11.140 0.0.0.3
+no auto-summary
+exit
+
+end
+wr
+
+````
+
+
+### R-MSW1
+````
+enable
+configure terminal
+ip routing
+
+interface range Fa0/1-3
+channel-protocol lacp
+channel-group 1 mode active
+no switchport
+no shutdown
+exit
+
+interface port-channel 1
+no switchport
+ip address 192.168.11.130 255.255.255.252
+exit
+
+
+interface Fa0/4
+no switchport
+ip address 192.168.11.33 255.255.255.224
+no shutdown
+exit
+
+
+router eigrp 100
+network 192.168.11.32 0.0.0.31
+network 192.168.11.128 0.0.0.3
+no auto-summary
+exit
+
+end
+wr
+
+````
+
+### R-MSW2
+````
+enable
+configure terminal
+ip routing
+
+interface range Fa0/4-6
+channel-protocol lacp
+channel-group 1 mode active
+no switchport
+no shutdown
+exit
+
+interface port-channel 1
+no switchport
+ip address 192.168.11.138 255.255.255.252
+exit
+
+
+interface Fa0/1
+no switchport
+ip address 192.168.11.65 255.255.255.224
+no shutdown
+exit
+
+
+router eigrp 100
+network 192.168.11.64 0.0.0.31
+network 192.168.11.136 0.0.0.3
+no auto-summary
+exit
+
+end
+wr
+
+````
+
+### Router1
+
+```
+enable
+configure terminal
+
+interface GigabitEthernet0/0
+ip address 192.168.31.142 255.255.255.252
+no shutdown
+exit
+
+interface GigabitEthernet0/1
+ip address 192.168.31.97 255.255.255.224
+no shutdown
+exit
+
+!EIGRP
+router eigrp 100
+network 192.168.11.96 0.0.0.31
+network 192.168.11.140 0.0.0.3
+no auto-summary
+exit
+
+end
+wr
+
+show standby brief
+
+```
+### Router2
+
+```
+enable
+configure terminal
+
+interface GigabitEthernet0/0
+ip address 192.168.31.134 255.255.255.252
+no shutdown
+exit
+
+interface GigabitEthernet0/1
+ip address 192.168.31.1 255.255.255.224
+no shutdown
+exit
+
+!EIGRP
+router eigrp 100
+network 192.168.11.0 0.0.0.31
+network 192.168.11.132 0.0.0.3
+no auto-summary
+exit
+
+end
+wr
+
+show standby brief
+
+```
