@@ -892,61 +892,6 @@ show standby brief
 
 ```
 
-### Server DHCP
-
-#### IP
-```
-192.168.11.2
-```
-![imagen](img/dhcp/ip_server_dhcp.png)
-
-### Pools
-
-![imagen](img/dhcp/server_dhcp_PoolAdmin.png)
-![imagen](img/dhcp/server_dhcp_PoolEstudiantes.png)
-
-### Router0
-```
-! Helper Address
-enable
-configure terminal
-interface GigabitEthernet0/0.11
-ip helper-address 192.168.11.2
-exit
-interface GigabitEthernet0/0.21
-ip helper-address 192.168.11.2
-exit
-end
-wr
-
-```
-
-### Router1
-```
-! Helper Address
-enable
-configure terminal
-interface GigabitEthernet0/0.11
-ip helper-address 192.168.100.130
-exit
-interface GigabitEthernet0/0.21
-ip helper-address 192.168.100.130
-exit
-end
-wr
-
-```
-
-### PC's
-![imagen](img/dhcp/pc0_ip-dhcp.png)
-![imagen](img/dhcp/laptop0_ip-dhcp.png)
-
-
-
-
-
-
-
 
 ## Configuración BGP
 
@@ -1089,3 +1034,145 @@ exit
 end
 wr
 ```
+
+
+## Server DHCP
+
+#### IP
+```
+192.168.11.2
+```
+![imagen](img/dhcp/ip_server_dhcp.png)
+
+### Pools
+
+![imagen](img/dhcp/server_dhcp_PoolAdmin.png)
+![imagen](img/dhcp/server_dhcp_PoolEstudiantes.png)
+
+### R-MSW1_ISP1
+```
+! Helper Address
+enable
+configure terminal
+
+interface vlan 10
+ip helper-address 192.168.11.2
+exit
+
+end
+wr
+
+```
+
+### R-MSW2_ISP1
+```
+! Helper Address
+enable
+configure terminal
+
+interface vlan 15
+ip helper-address 192.168.11.2
+exit
+
+end
+wr
+
+```
+
+### Router1_ISP1
+```
+! Helper Address
+enable
+configure terminal
+
+interface GigabitEthernet0/1
+ip helper-address 192.168.11.2
+exit
+
+end
+wr
+
+```
+
+### Router1_ISP2
+```
+! Helper Address
+enable
+configure terminal
+
+interface GigabitEthernet0/0/0
+ip helper-address 192.168.11.2
+exit
+
+end
+wr
+
+```
+### R-MSW1_ISP2
+```
+! Helper Address
+enable
+configure terminal
+
+interface Fa0/1
+ip helper-address 192.168.11.2
+exit
+
+end
+wr
+
+```
+
+### R-MSW0_ISP2
+```
+! Helper Address
+enable
+configure terminal
+
+interface Fa0/9
+ip helper-address 192.168.11.2
+exit
+
+end
+wr
+
+```
+
+
+### Router1_ISP3
+```
+! Helper Address
+enable
+configure terminal
+interface GigabitEthernet0/1.30
+ip helper-address 192.168.11.2
+exit
+interface GigabitEthernet0/1.35
+ip helper-address 192.168.11.2
+exit
+end
+wr
+
+```
+
+### Router2_ISP3
+```
+! Helper Address
+enable
+configure terminal
+interface GigabitEthernet0/1.30
+ip helper-address 192.168.11.2
+exit
+interface GigabitEthernet0/1.35
+ip helper-address 192.168.11.2
+exit
+end
+wr
+
+```
+
+
+### PC's
+![imagen](img/dhcp/pc0_ip-dhcp.png)
+![imagen](img/dhcp/laptop0_ip-dhcp.png)
+
