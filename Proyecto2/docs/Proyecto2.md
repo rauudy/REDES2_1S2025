@@ -36,9 +36,46 @@ ip address 172.1.0.18 255.255.255.252
 no shutdown
 exit
 
+router eigrp 10
+network 192.168.21.64 0.0.0.31
+network 192.168.21.132 0.0.0.3
+network 192.168.21.136 0.0.0.3
+network 172.1.0.16 0.0.0.3
+no auto-summary
+exit
+
 end
 wr
 ```
+
+
+
+router eigrp 10
+no network 192.168.21.0
+network 192.168.21.136 0.0.0.3
+network 192.168.21.140 0.0.0.3
+no auto-summary
+exit
+
+
+router eigrp 10
+no network 192.168.21.0
+network 192.168.21.32 0.0.0.31
+network 192.168.21.128 0.0.0.3
+network 192.168.21.132 0.0.0.3
+no auto-summary
+exit
+
+
+router eigrp 10
+no network 192.168.21.0
+network 192.168.21.128 0.0.0.3
+network 192.168.21.0 0.0.0.31
+no auto-summary
+exit
+
+
+
 ### Tecnologías Implementadas
 
 - **VLANs:**  
@@ -438,6 +475,8 @@ exit
 router ospf 1
 network 192.168.31.96 0.0.0.3 area 1
 network 192.168.31.100 0.0.0.3 area 1
+network 172.1.0.20 0.0.0.3 area 1
+exit
 
 end
 wr
@@ -709,6 +748,7 @@ network 192.168.11.128 0.0.0.3
 network 192.168.11.132 0.0.0.3
 network 192.168.11.136 0.0.0.3
 network 192.168.11.140 0.0.0.3
+network 172.1.0.12 0.0.0.3
 no auto-summary
 exit
 
@@ -926,6 +966,7 @@ wr
 ```
 enable
 configure terminal
+ip routing
 
 interface GigabitEthernet1/1/3
 no switchport
@@ -945,6 +986,21 @@ ip address 172.1.0.13 255.255.255.252
 no shutdown
 exit
 
+router bgp 65001
+neighbor 172.1.0.10 remote-as 65002
+neighbor 172.1.0.3 remote-as 65003
+network 172.1.0.0 mask 255.255.255.252
+network 172.1.0.8 mask 255.255.255.252
+network 172.1.0.12 mask 255.255.255.252
+redistribute eigrp 100
+exit
+
+router eigrp 100
+redistribute bgp 65001 metric 100000 100 255 1 1500
+network 172.1.0.12 0.0.0.3
+no auto-summary
+exit
+
 end
 wr
 
@@ -954,6 +1010,7 @@ wr
 ```
 enable
 configure terminal
+ip routing
 
 interface GigabitEthernet1/1/3
 no switchport
@@ -973,6 +1030,21 @@ ip address 172.1.0.17 255.255.255.252
 no shutdown
 exit
 
+router bgp 65002
+neighbor 172.1.0.9 remote-as 65001
+neighbor 172.1.0.6 remote-as 65003
+network 172.1.0.4 mask 255.255.255.252
+network 172.1.0.8 mask 255.255.255.252
+network 172.1.0.16 mask 255.255.255.252
+redistribute eigrp 10
+exit
+
+router eigrp 10
+redistribute bgp 65002 metric 100000 100 255 1 1500
+network 172.1.0.16 0.0.0.3
+no auto-summary
+exit
+
 end
 wr
 ```
@@ -980,6 +1052,7 @@ wr
 ```
 enable
 configure terminal
+ip routing
 
 interface GigabitEthernet1/1/3
 no switchport
@@ -997,6 +1070,20 @@ interface GigabitEthernet1/0/1
 no switchport
 ip address 172.1.0.21 255.255.255.252
 no shutdown
+exit
+
+router bgp 65003
+neighbor 172.1.0.1 remote-as 65001
+neighbor 172.1.0.5 remote-as 65002
+network 172.1.0.0 mask 255.255.255.252
+network 172.1.0.4 mask 255.255.255.252
+network 172.1.0.20 mask 255.255.255.252
+redistribute ospf 1
+exit
+
+router ospf 1
+redistribute bgp 65003 subnets
+network 172.1.0.20 0.0.0.3 area 1
 exit
 
 end
