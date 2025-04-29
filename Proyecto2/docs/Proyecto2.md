@@ -1219,8 +1219,6 @@ access-list 100 deny ip 192.168.11.64 0.0.0.31 192.168.11.32 0.0.0.31
 access-list 100 deny ip 192.168.11.64 0.0.0.31 192.168.21.0 0.0.0.31
 access-list 100 deny ip 192.168.11.64 0.0.0.31 192.168.21.64 0.0.0.31
 !isp3
-access-list 100 deny ip 192.168.11.64 0.0.0.31 192.168.31.32 0.0.0.31
-access-list 100 deny ip 192.168.11.64 0.0.0.31 192.168.31.64 0.0.0.31
 
 access-list 100 permit ip any any
 
@@ -1248,8 +1246,6 @@ access-list 100 deny ip 192.168.11.96 0.0.0.31 192.168.11.32 0.0.0.31
 access-list 100 deny ip 192.168.11.96 0.0.0.31 192.168.21.0 0.0.0.31
 access-list 100 deny ip 192.168.11.96 0.0.0.31 192.168.21.64 0.0.0.31
 !isp3
-access-list 100 deny ip 192.168.11.96 0.0.0.31 192.168.31.32 0.0.0.31
-access-list 100 deny ip 192.168.11.96 0.0.0.31 192.168.31.64 0.0.0.31
 
 access-list 100 permit ip any any
 
@@ -1270,22 +1266,20 @@ enable
 configure terminal
 
 ! Facturacion-20_1
-no access-list 100
 !isp1
+no access-list 100
 access-list 100 permit icmp 192.168.21.0 0.0.0.31 192.168.11.32 0.0.0.31 echo-reply
 access-list 100 deny ip 192.168.21.0 0.0.0.31 192.168.11.32 0.0.0.31
 access-list 100 deny ip 192.168.21.0 0.0.0.31 192.168.11.64 0.0.0.31
 access-list 100 deny ip 192.168.21.0 0.0.0.31 192.168.11.96 0.0.0.31
 !isp2
 !isp3
-access-list 100 deny ip 192.168.21.0 0.0.0.31 192.168.31.32 0.0.0.31
-access-list 100 deny ip 192.168.21.0 0.0.0.31 192.168.31.64 0.0.0.31
 
 
 access-list 100 permit ip any any
 
 
-interface GigabitEthernet0/1
+interface GigabitEthernet0/0/0
 ip access-group 100 in
 exit
 
@@ -1299,15 +1293,13 @@ wr
 enable
 configure terminal
 
-! Ventas-22
+! Ventas-22_1
 no access-list 100
 !isp1
 access-list 100 permit icmp 192.168.21.32 0.0.0.31 192.168.11.32 0.0.0.31 echo-reply
 access-list 100 deny ip 192.168.21.32 0.0.0.31 192.168.11.32 0.0.0.31
 !isp2
 !isp3
-access-list 100 deny ip 192.168.21.32 0.0.0.31 192.168.31.32 0.0.0.31
-access-list 100 deny ip 192.168.21.32 0.0.0.31 192.168.31.64 0.0.0.31
 
 access-list 100 permit ip any any
 
@@ -1334,8 +1326,8 @@ access-list 100 deny ip 192.168.21.64 0.0.0.31 192.168.11.64 0.0.0.31
 access-list 100 deny ip 192.168.21.64 0.0.0.31 192.168.11.96 0.0.0.31
 !isp2
 !isp3
-access-list 100 deny ip 192.168.21.64 0.0.0.31 192.168.31.32 0.0.0.31
-access-list 100 deny ip 192.168.21.64 0.0.0.31 192.168.31.64 0.0.0.31
+
+access-list 100 permit ip any any
 
 interface fa0/1
 ip access-group 100 in
@@ -1355,10 +1347,18 @@ configure terminal
 
 ! Soporte-30
 no access-list 100
+
+access-list 100 permit ip 192.168.31.32 0.0.0.31 192.168.11.96 0.0.0.31
+access-list 100 permit ip 192.168.31.32 0.0.0.31 192.168.11.64 0.0.0.31
+access-list 100 permit ip 192.168.31.32 0.0.0.31 192.168.21.0 0.0.0.31
+access-list 100 permit ip 192.168.31.32 0.0.0.31 192.168.21.32 0.0.0.31
+access-list 100 permit ip 192.168.31.32 0.0.0.31 192.168.21.64 0.0.0.31
+access-list 100 permit ip 192.168.31.32 0.0.0.31 192.168.21.96 0.0.0.31
+access-list 100 permit ip 192.168.31.32 0.0.0.31 192.168.31.64 0.0.0.31
 access-list 100 permit icmp 192.168.31.32 0.0.0.31 192.168.11.32 0.0.0.31 echo-reply
 access-list 100 deny ip 192.168.31.32 0.0.0.31 192.168.11.32 0.0.0.31
 access-list 100 permit ip any any
-
+p
 
 interface GigabitEthernet0/1.30
 ip access-group 100 in
@@ -1366,6 +1366,13 @@ exit
 
 ! Seguridad-35
 no access-list 101
+access-list 101 permit ip 192.168.31.64 0.0.0.31 192.168.11.96 0.0.0.31
+access-list 101 permit ip 192.168.31.64 0.0.0.31 192.168.11.64 0.0.0.31
+access-list 101 permit ip 192.168.31.64 0.0.0.31 192.168.21.0 0.0.0.31
+access-list 101 permit ip 192.168.31.64 0.0.0.31 192.168.21.32 0.0.0.31
+access-list 101 permit ip 192.168.31.64 0.0.0.31 192.168.21.64 0.0.0.31
+access-list 101 permit ip 192.168.31.64 0.0.0.31 192.168.21.96 0.0.0.31
+access-list 101 permit ip 192.168.31.64 0.0.0.31 192.168.31.32 0.0.0.31
 access-list 101 permit icmp 192.168.31.64 0.0.0.31 192.168.11.32 0.0.0.31 echo-reply
 access-list 101 deny ip 192.168.31.64 0.0.0.31 192.168.11.32 0.0.0.31
 access-list 101 permit ip any any
@@ -1389,6 +1396,14 @@ configure terminal
 
 ! Soporte-30
 no access-list 100
+
+access-list 100 permit ip 192.168.31.32 0.0.0.31 192.168.11.96 0.0.0.31
+access-list 100 permit ip 192.168.31.32 0.0.0.31 192.168.11.64 0.0.0.31
+access-list 100 permit ip 192.168.31.32 0.0.0.31 192.168.21.0 0.0.0.31
+access-list 100 permit ip 192.168.31.32 0.0.0.31 192.168.21.32 0.0.0.31
+access-list 100 permit ip 192.168.31.32 0.0.0.31 192.168.21.64 0.0.0.31
+access-list 100 permit ip 192.168.31.32 0.0.0.31 192.168.21.96 0.0.0.31
+access-list 100 permit ip 192.168.31.32 0.0.0.31 192.168.31.64 0.0.0.31
 access-list 100 permit icmp 192.168.31.32 0.0.0.31 192.168.11.32 0.0.0.31 echo-reply
 access-list 100 deny ip 192.168.31.32 0.0.0.31 192.168.11.32 0.0.0.31
 access-list 100 permit ip any any
@@ -1400,6 +1415,13 @@ exit
 
 ! Seguridad-35
 no access-list 101
+access-list 101 permit ip 192.168.31.64 0.0.0.31 192.168.11.96 0.0.0.31
+access-list 101 permit ip 192.168.31.64 0.0.0.31 192.168.11.64 0.0.0.31
+access-list 101 permit ip 192.168.31.64 0.0.0.31 192.168.21.0 0.0.0.31
+access-list 101 permit ip 192.168.31.64 0.0.0.31 192.168.21.32 0.0.0.31
+access-list 101 permit ip 192.168.31.64 0.0.0.31 192.168.21.64 0.0.0.31
+access-list 101 permit ip 192.168.31.64 0.0.0.31 192.168.21.96 0.0.0.31
+access-list 101 permit ip 192.168.31.64 0.0.0.31 192.168.31.32 0.0.0.31
 access-list 101 permit icmp 192.168.31.64 0.0.0.31 192.168.11.32 0.0.0.31 echo-reply
 access-list 101 deny ip 192.168.31.64 0.0.0.31 192.168.11.32 0.0.0.31
 access-list 101 permit ip any any
@@ -1409,9 +1431,5 @@ interface GigabitEthernet0/1.35
 ip access-group 101 in
 exit
 
-
-
-end
-wr
 
 ```
