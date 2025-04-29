@@ -659,12 +659,10 @@ no shutdown
 exit
 
 interface port-channel 1
-no switchport
 ip address 192.168.11.129 255.255.255.252
 exit
 
 interface port-channel 2
-no switchport
 ip address 192.168.11.137 255.255.255.252
 exit
 
