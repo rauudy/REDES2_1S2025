@@ -1123,13 +1123,13 @@ wr
 
 ```
 
-### R-MSW0_ISP2
+### R-MSW2_ISP2
 ```
 ! Helper Address
 enable
 configure terminal
 
-interface Fa0/9
+interface Fa0/1
 ip helper-address 192.168.11.2
 exit
 
@@ -1176,3 +1176,242 @@ wr
 ![imagen](img/dhcp/pc0_ip-dhcp.png)
 ![imagen](img/dhcp/laptop0_ip-dhcp.png)
 
+
+
+
+
+
+
+
+
+
+## ACL
+
+### R-MSW1_ISP1
+```
+enable
+configure terminal
+
+! Administracion-10
+no access-list 100
+access-list 100 permit ip any any
+
+interface Vlan10
+ip access-group 100 in
+exit
+
+end
+wr
+
+```
+
+### R-MSW2_ISP1
+```
+enable
+configure terminal
+
+! Atencion_al_cliente-15_2
+no access-list 100
+!isp1
+access-list 100 permit icmp 192.168.11.64 0.0.0.31 192.168.11.32 0.0.0.31 echo-reply
+access-list 100 deny ip 192.168.11.64 0.0.0.31 192.168.11.32 0.0.0.31
+!isp2
+access-list 100 deny ip 192.168.11.64 0.0.0.31 192.168.21.0 0.0.0.31
+access-list 100 deny ip 192.168.11.64 0.0.0.31 192.168.21.64 0.0.0.31
+!isp3
+access-list 100 deny ip 192.168.11.64 0.0.0.31 192.168.31.32 0.0.0.31
+access-list 100 deny ip 192.168.11.64 0.0.0.31 192.168.31.64 0.0.0.31
+
+access-list 100 permit ip any any
+
+
+interface vlan 15
+ip access-group 100 in
+exit
+
+end
+wr
+
+```
+
+### Router1_ISP1
+```
+enable
+configure terminal
+
+! Atencion_al_cliente-15_1
+no access-list 100
+!isp1
+access-list 100 permit icmp 192.168.11.96 0.0.0.31 192.168.11.32 0.0.0.31 echo-reply
+access-list 100 deny ip 192.168.11.96 0.0.0.31 192.168.11.32 0.0.0.31
+!isp2
+access-list 100 deny ip 192.168.11.96 0.0.0.31 192.168.21.0 0.0.0.31
+access-list 100 deny ip 192.168.11.96 0.0.0.31 192.168.21.64 0.0.0.31
+!isp3
+access-list 100 deny ip 192.168.11.96 0.0.0.31 192.168.31.32 0.0.0.31
+access-list 100 deny ip 192.168.11.96 0.0.0.31 192.168.31.64 0.0.0.31
+
+access-list 100 permit ip any any
+
+interface GigabitEthernet0/1
+ip access-group 100 in
+exit
+
+end
+wr
+
+```
+
+
+
+### Router1_ISP2
+```
+enable
+configure terminal
+
+! Facturacion-20_1
+no access-list 100
+!isp1
+access-list 100 permit icmp 192.168.21.0 0.0.0.31 192.168.11.32 0.0.0.31 echo-reply
+access-list 100 deny ip 192.168.21.0 0.0.0.31 192.168.11.32 0.0.0.31
+access-list 100 deny ip 192.168.21.0 0.0.0.31 192.168.11.64 0.0.0.31
+access-list 100 deny ip 192.168.21.0 0.0.0.31 192.168.11.96 0.0.0.31
+!isp2
+!isp3
+access-list 100 deny ip 192.168.21.0 0.0.0.31 192.168.31.32 0.0.0.31
+access-list 100 deny ip 192.168.21.0 0.0.0.31 192.168.31.64 0.0.0.31
+
+
+access-list 100 permit ip any any
+
+
+interface GigabitEthernet0/1
+ip access-group 100 in
+exit
+
+end
+wr
+
+```
+
+### R-MSW1_ISP2
+```
+enable
+configure terminal
+
+! Ventas-22
+no access-list 100
+!isp1
+access-list 100 permit icmp 192.168.21.32 0.0.0.31 192.168.11.32 0.0.0.31 echo-reply
+access-list 100 deny ip 192.168.21.32 0.0.0.31 192.168.11.32 0.0.0.31
+!isp2
+!isp3
+access-list 100 deny ip 192.168.21.32 0.0.0.31 192.168.31.32 0.0.0.31
+access-list 100 deny ip 192.168.21.32 0.0.0.31 192.168.31.64 0.0.0.31
+
+access-list 100 permit ip any any
+
+interface fa0/1
+ip access-group 100 in
+exit
+
+end
+wr
+
+```
+
+### R-MSW2_ISP2
+```
+enable
+configure terminal
+
+! Facturacion-20_2
+no access-list 100
+!isp1
+access-list 100 permit icmp 192.168.21.64 0.0.0.31 192.168.11.32 0.0.0.31 echo-reply
+access-list 100 deny ip 192.168.21.64 0.0.0.31 192.168.11.32 0.0.0.31
+access-list 100 deny ip 192.168.21.64 0.0.0.31 192.168.11.64 0.0.0.31
+access-list 100 deny ip 192.168.21.64 0.0.0.31 192.168.11.96 0.0.0.31
+!isp2
+!isp3
+access-list 100 deny ip 192.168.21.64 0.0.0.31 192.168.31.32 0.0.0.31
+access-list 100 deny ip 192.168.21.64 0.0.0.31 192.168.31.64 0.0.0.31
+
+interface fa0/1
+ip access-group 100 in
+exit
+
+end
+wr
+
+```
+
+
+
+### Router1_ISP3
+```
+enable
+configure terminal
+
+! Soporte-30
+no access-list 100
+access-list 100 permit icmp 192.168.31.32 0.0.0.31 192.168.11.32 0.0.0.31 echo-reply
+access-list 100 deny ip 192.168.31.32 0.0.0.31 192.168.11.32 0.0.0.31
+access-list 100 permit ip any any
+
+
+interface GigabitEthernet0/1.30
+ip access-group 100 in
+exit
+
+! Seguridad-35
+no access-list 101
+access-list 101 permit icmp 192.168.31.64 0.0.0.31 192.168.11.32 0.0.0.31 echo-reply
+access-list 101 deny ip 192.168.31.64 0.0.0.31 192.168.11.32 0.0.0.31
+access-list 101 permit ip any any
+
+
+interface GigabitEthernet0/1.35
+ip access-group 101 in
+exit
+
+
+
+end
+wr
+
+```
+
+### Router2_ISP3
+```
+enable
+configure terminal
+
+! Soporte-30
+no access-list 100
+access-list 100 permit icmp 192.168.31.32 0.0.0.31 192.168.11.32 0.0.0.31 echo-reply
+access-list 100 deny ip 192.168.31.32 0.0.0.31 192.168.11.32 0.0.0.31
+access-list 100 permit ip any any
+
+
+interface GigabitEthernet0/1.30
+ip access-group 100 in
+exit
+
+! Seguridad-35
+no access-list 101
+access-list 101 permit icmp 192.168.31.64 0.0.0.31 192.168.11.32 0.0.0.31 echo-reply
+access-list 101 deny ip 192.168.31.64 0.0.0.31 192.168.11.32 0.0.0.31
+access-list 101 permit ip any any
+
+
+interface GigabitEthernet0/1.35
+ip access-group 101 in
+exit
+
+
+
+end
+wr
+
+```
