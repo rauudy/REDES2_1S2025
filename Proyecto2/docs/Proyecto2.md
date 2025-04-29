@@ -83,13 +83,14 @@ Subredes
 | 7   | 2     | 192.168.31.108/30 | 255.255.255.252 | 192.168.31.109  | 192.168.31.110  | 192.168.31.111   |
 | 8   | 2     | 192.168.31.112/30 | 255.255.255.252 | 192.168.31.113  | 192.168.31.114  | 192.168.31.115   |
 
-## VTP y VLANS
+### VTP y VLANS
 
-### Switch0 servidor
+### Switch0_ISP3
 ```
-!vtp
 enable
 configure terminal
+
+! vtp server
 vtp version 2
 vtp domain g37_isp3
 vtp mode server
@@ -115,7 +116,7 @@ wr
 
 ```
 
-### Switch1 cliente Soporte y propagación de VLANs
+### Switch1_ISP3
 ```
 enable
 configure terminal
@@ -143,7 +144,7 @@ end
 wr
 ```
 
-### Switch2 cliente Seguridad y propagación de VLANs
+### Switch2_ISP3
 ```
 enable
 configure terminal
@@ -171,8 +172,37 @@ end
 wr
 ```
 
+### Switch4_ISP3
+```
+enable
+configure terminal
 
-### Router1
+!vlans
+vlan 31
+name Server_DNS
+
+!trunk
+interface fa0/1
+switchport mode trunk
+switchport trunk allowed vlan all
+exit
+
+!access
+interface Fa0/3
+switchport mode access
+switchport access vlan 31
+exit
+
+! spanning-tree
+spanning-tree mode rapid-pvst 
+
+end
+wr
+
+```
+
+
+### Router1_ISP3
 
 ```
 enable
@@ -217,7 +247,7 @@ wr
 show standby brief
 
 ```
-### Router2
+### Router2_ISP3
 
 ```
 enable
@@ -264,7 +294,7 @@ show standby brief
 ```
 
 
-### R-MSW2
+### R-MSW2_ISP3
 ````
 enable
 configure terminal
@@ -312,7 +342,7 @@ wr
 ````
 
 
-### R-MSW1
+### R-MSW1_ISP3
 ````
 enable
 configure terminal
@@ -335,12 +365,14 @@ ip address 192.168.31.106 255.255.255.252
 no shutdown
 exit
 
-interface GigabitEthernet0/2
-no switchport
-ip address 192.168.31.1 255.255.255.252
-no shutdown
-exit
 
+!vlan
+vlan 31
+name Server_DNS
+
+interface vlan 31
+ip address 192.168.31.1 255.255.255.252
+exit
 
 router ospf 1
 network 192.168.31.96 0.0.0.3 area 1
@@ -352,7 +384,7 @@ wr
 ````
 
 
-### R-MSW0
+### R-MSW0_ISP3
 ````
 enable
 configure terminal
@@ -395,11 +427,8 @@ wr
 
 
 
-## Configuracion DNS
+## Configuracion DNS_ISP3
 ---
-<div align="justify">
-El servicio DNS (Domain Name System) fue implementado para permitir la resolución de nombres dentro de la red, facilitando el acceso a servicios web mediante nombres de dominio en lugar de direcciones IP. Esta configuración mejora la usabilidad de la red y simula un entorno real en el que los usuarios acceden a recursos utilizando URLs.
-</div>
 
 1. ***Asignar direccion IP estatica al Servidor***:
     * IP: 192.168.31.2
@@ -493,8 +522,123 @@ Darle "Go"
 | 7   | 2     | 192.168.11.136/30 | 255.255.255.252 | 192.168.11.137   | 192.168.11.138   | 192.168.11.139    |
 | 8   | 2     | 192.168.11.140/30 | 255.255.255.252 | 192.168.11.141   | 192.168.11.142   | 192.168.11.143    |
 
+### Switch1_ISP1
+```
+enable
+configure terminal
 
-### R-MSW0
+!vlans
+vlan 10
+name Administracion
+
+!trunk
+interface fa0/1
+switchport mode trunk
+switchport trunk allowed vlan all
+exit
+
+!access
+interface range Fa0/2-3
+switchport mode access
+switchport access vlan 10
+exit
+
+! spanning-tree
+spanning-tree mode rapid-pvst 
+
+end
+wr
+
+```
+
+### Switch2_ISP1
+```
+enable
+configure terminal
+
+!vlans
+vlan 15
+name Atencion_al_cliente
+
+!trunk
+interface fa0/1
+switchport mode trunk
+switchport trunk allowed vlan all
+exit
+
+!access
+interface Fa0/2
+switchport mode access
+switchport access vlan 15
+exit
+
+! spanning-tree
+spanning-tree mode rapid-pvst 
+
+end
+wr
+
+```
+
+### Switch3_ISP1
+```
+enable
+configure terminal
+
+!vlans
+vlan 11
+name Server_DCHP
+
+!trunk
+interface fa0/1
+switchport mode access
+switchport access vlan 11
+exit
+
+!access
+interface Fa0/2
+switchport mode access
+switchport access vlan 11
+exit
+
+! spanning-tree
+spanning-tree mode rapid-pvst 
+
+end
+wr
+
+```
+
+### Switch4_ISP1
+```
+enable
+configure terminal
+
+!vlans
+vlan 15
+name Atencion_al_cliente
+
+!trunk
+interface fa0/1
+switchport mode access
+switchport access vlan 15
+exit
+
+!access
+interface range Fa0/2-3
+switchport mode access
+switchport access vlan 15
+exit
+
+! spanning-tree
+spanning-tree mode rapid-pvst 
+
+end
+wr
+
+```
+
+### R-MSW0_ISP1
 ````
 enable
 configure terminal
@@ -550,7 +694,7 @@ wr
 ````
 
 
-### R-MSW1
+### R-MSW1_ISP1
 ````
 enable
 configure terminal
@@ -564,15 +708,16 @@ no shutdown
 exit
 
 interface port-channel 1
-no switchport
 ip address 192.168.11.130 255.255.255.252
 exit
 
 
-interface Fa0/4
-no switchport
+!vlan
+vlan 10
+name Administracion
+
+interface vlan 10
 ip address 192.168.11.33 255.255.255.224
-no shutdown
 exit
 
 
@@ -587,7 +732,7 @@ wr
 
 ````
 
-### R-MSW2
+### R-MSW2_ISP1
 ````
 enable
 configure terminal
@@ -601,15 +746,15 @@ no shutdown
 exit
 
 interface port-channel 1
-no switchport
 ip address 192.168.11.138 255.255.255.252
 exit
 
+!vlan
+vlan 15
+name Atencion_al_cliente
 
-interface Fa0/1
-no switchport
+interface vlan 15
 ip address 192.168.11.65 255.255.255.224
-no shutdown
 exit
 
 
@@ -624,7 +769,7 @@ wr
 
 ````
 
-### Router1
+### Router1_ISP1
 
 ```
 enable
@@ -653,7 +798,7 @@ wr
 show standby brief
 
 ```
-### Router2
+### Router2_ISP1
 
 ```
 enable
@@ -682,3 +827,72 @@ wr
 show standby brief
 
 ```
+
+### Server DHCP
+
+#### IP
+```
+192.168.11.2
+```
+![imagen](img/dhcp/ip_server_dhcp.png)
+
+### Pools
+
+![imagen](img/dhcp/server_dhcp_PoolAdmin.png)
+![imagen](img/dhcp/server_dhcp_PoolEstudiantes.png)
+
+### Router0
+```
+! Helper Address
+enable
+configure terminal
+interface GigabitEthernet0/0.11
+ip helper-address 192.168.11.2
+exit
+interface GigabitEthernet0/0.21
+ip helper-address 192.168.11.2
+exit
+end
+wr
+
+```
+
+### Router1
+```
+! Helper Address
+enable
+configure terminal
+interface GigabitEthernet0/0.11
+ip helper-address 192.168.100.130
+exit
+interface GigabitEthernet0/0.21
+ip helper-address 192.168.100.130
+exit
+end
+wr
+
+```
+
+### PC's
+![imagen](img/dhcp/pc0_ip-dhcp.png)
+![imagen](img/dhcp/laptop0_ip-dhcp.png)
+
+
+
+
+
+
+
+
+## Configuración BGP
+
+### Subneteo de red 172.1.0.0 /24
+
+|   Name | Network Address   | Slash   | Mask            | Usable Range            | Broadcast   |
+|-------:|:------------------|:--------|:----------------|:------------------------|:------------|
+|      1 | 172.1.0.0         | /30     | 255.255.255.252 | 172.1.0.1 - 172.1.0.2   | 172.1.0.3   |
+|      2 | 172.1.0.4         | /30     | 255.255.255.252 | 172.1.0.5 - 172.1.0.6   | 172.1.0.7   |
+|      3 | 172.1.0.8         | /30     | 255.255.255.252 | 172.1.0.9 - 172.1.0.10  | 172.1.0.11  |
+|      4 | 172.1.0.12        | /30     | 255.255.255.252 | 172.1.0.13 - 172.1.0.14 | 172.1.0.15  |
+|      5 | 172.1.0.16        | /30     | 255.255.255.252 | 172.1.0.17 - 172.1.0.18 | 172.1.0.19  |
+|      6 | 172.1.0.20        | /30     | 255.255.255.252 | 172.1.0.21 - 172.1.0.22 | 172.1.0.23  |
