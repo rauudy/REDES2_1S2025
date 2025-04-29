@@ -631,12 +631,12 @@ enable
 configure terminal
 
 interface GigabitEthernet0/0
-ip address 192.168.31.142 255.255.255.252
+ip address 192.168.11.142 255.255.255.252
 no shutdown
 exit
 
 interface GigabitEthernet0/1
-ip address 192.168.31.97 255.255.255.224
+ip address 192.168.11.97 255.255.255.224
 no shutdown
 exit
 
@@ -660,12 +660,12 @@ enable
 configure terminal
 
 interface GigabitEthernet0/0
-ip address 192.168.31.134 255.255.255.252
+ip address 192.168.11.134 255.255.255.252
 no shutdown
 exit
 
 interface GigabitEthernet0/1
-ip address 192.168.31.1 255.255.255.224
+ip address 192.168.11.1 255.255.255.224
 no shutdown
 exit
 
