@@ -24,6 +24,21 @@ En resumen, ISP 2 busca proporcionar una red funcional, escalable y administrabl
 | 4    | 2             | 2                | 0             | 192.168.21.140     | /30    | 255.255.255.252    | 192.168.21.141 - 192.168.21.142  | 192.168.21.143    |
 
 
+### R-MSW0_ISP2
+
+```
+enable
+configure terminal
+
+interface Fa0/1
+no switchport
+ip address 172.1.0.18 255.255.255.252
+no shutdown
+exit
+
+end
+wr
+```
 ### Tecnologías Implementadas
 
 - **VLANs:**  
@@ -414,6 +429,11 @@ no switchport
 ip address 192.168.31.98 255.255.255.252
 exit
 
+interface Fa0/7
+no switchport
+ip address 172.1.0.22 255.255.255.252
+no shutdown
+exit
 
 router ospf 1
 network 192.168.31.96 0.0.0.3 area 1
@@ -678,6 +698,12 @@ ip address 192.168.11.141 255.255.255.252
 no shutdown
 exit
 
+interface Fa0/9
+no switchport
+ip address 172.1.0.14 255.255.255.252
+no shutdown
+exit
+
 router eigrp 100
 network 192.168.11.128 0.0.0.3
 network 192.168.11.132 0.0.0.3
@@ -884,13 +910,95 @@ wr
 
 ## Configuración BGP
 
-### Subneteo de red 172.1.0.0 /24
+### Subneteo de red 172.1.0.0 /16
 
-|   Name | Network Address   | Slash   | Mask            | Usable Range            | Broadcast   |
-|-------:|:------------------|:--------|:----------------|:------------------------|:------------|
-|      1 | 172.1.0.0         | /30     | 255.255.255.252 | 172.1.0.1 - 172.1.0.2   | 172.1.0.3   |
-|      2 | 172.1.0.4         | /30     | 255.255.255.252 | 172.1.0.5 - 172.1.0.6   | 172.1.0.7   |
-|      3 | 172.1.0.8         | /30     | 255.255.255.252 | 172.1.0.9 - 172.1.0.10  | 172.1.0.11  |
-|      4 | 172.1.0.12        | /30     | 255.255.255.252 | 172.1.0.13 - 172.1.0.14 | 172.1.0.15  |
-|      5 | 172.1.0.16        | /30     | 255.255.255.252 | 172.1.0.17 - 172.1.0.18 | 172.1.0.19  |
-|      6 | 172.1.0.20        | /30     | 255.255.255.252 | 172.1.0.21 - 172.1.0.22 | 172.1.0.23  |
+|   Name | Network Address   | Mask            | Usable Range            | Broadcast   |
+|-------:|:------------------|:----------------|:------------------------|:------------|
+|      1 | 172.1.0.0 /30     | 255.255.255.252 | 172.1.0.1 - 172.1.0.2   | 172.1.0.3   |
+|      2 | 172.1.0.4 /30     | 255.255.255.252 | 172.1.0.5 - 172.1.0.6   | 172.1.0.7   |
+|      3 | 172.1.0.8 /30     | 255.255.255.252 | 172.1.0.9 - 172.1.0.10  | 172.1.0.11  |
+|      4 | 172.1.0.12 /30    | 255.255.255.252 | 172.1.0.13 - 172.1.0.14 | 172.1.0.15  |
+|      5 | 172.1.0.16 /30    | 255.255.255.252 | 172.1.0.17 - 172.1.0.18 | 172.1.0.19  |
+|      6 | 172.1.0.20 /30   | 255.255.255.252 | 172.1.0.21 - 172.1.0.22 | 172.1.0.23  |
+
+
+### RR1
+```
+enable
+configure terminal
+
+interface GigabitEthernet1/1/3
+no switchport
+ip address 172.1.0.1 255.255.255.252
+no shutdown
+exit
+
+interface GigabitEthernet1/1/4
+no switchport
+ip address 172.1.0.9 255.255.255.252
+no shutdown
+exit
+
+interface GigabitEthernet1/0/1
+no switchport
+ip address 172.1.0.13 255.255.255.252
+no shutdown
+exit
+
+end
+wr
+
+```
+
+### RR2
+```
+enable
+configure terminal
+
+interface GigabitEthernet1/1/3
+no switchport
+ip address 172.1.0.10 255.255.255.252
+no shutdown
+exit
+
+interface GigabitEthernet1/1/4
+no switchport
+ip address 172.1.0.5 255.255.255.252
+no shutdown
+exit
+
+interface GigabitEthernet1/0/1
+no switchport
+ip address 172.1.0.17 255.255.255.252
+no shutdown
+exit
+
+end
+wr
+```
+### RR3
+```
+enable
+configure terminal
+
+interface GigabitEthernet1/1/3
+no switchport
+ip address 172.1.0.2 255.255.255.252
+no shutdown
+exit
+
+interface GigabitEthernet1/1/4
+no switchport
+ip address 172.1.0.6 255.255.255.252
+no shutdown
+exit
+
+interface GigabitEthernet1/0/1
+no switchport
+ip address 172.1.0.21 255.255.255.252
+no shutdown
+exit
+
+end
+wr
+```
